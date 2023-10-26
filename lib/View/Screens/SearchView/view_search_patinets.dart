@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:doctor_plus/Model/patient.dart';
 import 'package:doctor_plus/View/Widgets/patient_card_title.dart';
+import 'package:doctor_plus/Controller/firestore_crud.dart';
 
 class SearchBlock extends StatefulWidget {
-  var _patientList;
-  SearchBlock(this._patientList);
+  // crud operation opject
+
+  SearchBlock();
   @override
-  _SearchBlockState createState() => _SearchBlockState(_patientList);
+  _SearchBlockState createState() => _SearchBlockState();
 }
 
 class _SearchBlockState extends State<SearchBlock> {
@@ -14,15 +16,17 @@ class _SearchBlockState extends State<SearchBlock> {
   final TextEditingController _searchController = TextEditingController();
   List<Patient> _AllpatientList = [];
   List<Patient> _filteredList = [];
-  _SearchBlockState(this._AllpatientList);
+  _SearchBlockState();
 
   // create intial state
   @override
   void initState() {
-    super.initState();
+    firestroeCRUD db = firestroeCRUD();
+    _AllpatientList = db.getPatients();
     setState(() {
       _AllpatientList.sort((a, b) => a.name!.compareTo(b.name!));
       _filteredList = _AllpatientList;
+      super.initState();
     });
   }
 

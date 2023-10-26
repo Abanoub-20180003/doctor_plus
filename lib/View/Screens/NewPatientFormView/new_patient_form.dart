@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:doctor_plus/Model/patient.dart';
+import 'package:doctor_plus/Controller/firestore_crud.dart';
 
 enum ganderGroup { male, female }
 
@@ -600,8 +601,10 @@ class _newPatientForm extends State<newPatientForm> {
             p.gander = _gender;
             p.occupation = occupation.text;
             p.specialHabit = special_habit.text;
-            //pati
-            print('Submited');
+
+            // add to firestore
+            firestroeCRUD db = firestroeCRUD();
+            db.addPatient(p);
             Navigator.pop(context, p);
           }
         },

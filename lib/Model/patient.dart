@@ -7,7 +7,9 @@ class Patient {
       maritalStatus,
       gander,
       occupation,
-      specialHabit;
+      specialHabit,
+      docId,
+      userId;
 
   // address
   String? address, telHome, cellPhone;

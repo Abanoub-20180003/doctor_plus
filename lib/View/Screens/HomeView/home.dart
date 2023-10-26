@@ -75,10 +75,8 @@ class Home extends StatelessWidget {
             ElevatedButton(
                 child: Text('Search...'),
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => SearchBlock(patientList)));
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SearchBlock()));
                 },
                 style: homeButtonsStyle),
             const SizedBox(height: 10),
