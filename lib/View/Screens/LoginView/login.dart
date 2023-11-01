@@ -1,6 +1,9 @@
+import 'package:doctor_plus/Model/doctor.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //import 'package:hive_flutter/hive_flutter.dart';
 import 'package:doctor_plus/View/Screens/HomeView/home.dart';
+import 'package:doctor_plus/Controller/authentication.dart';
 
 import 'signup.dart';
 
@@ -14,11 +17,12 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  Authentication auth = Authentication();
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   // login vars
   final FocusNode _focusNodePassword = FocusNode();
-  final TextEditingController _controllerUsername = TextEditingController();
+  final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
 
   // local login
@@ -53,10 +57,10 @@ class _LoginState extends State<Login> {
               ),
               const SizedBox(height: 60),
               TextFormField(
-                controller: _controllerUsername,
+                controller: _controllerEmail,
                 keyboardType: TextInputType.name,
                 decoration: InputDecoration(
-                  labelText: "Username",
+                  labelText: "Email",
                   prefixIcon: const Icon(Icons.person_outline),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -67,12 +71,9 @@ class _LoginState extends State<Login> {
                 ),
                 onEditingComplete: () => _focusNodePassword.requestFocus(),
                 validator: (String? value) {
-                  // if (value == null || value.isEmpty) {
-                  //   return "Please enter username.";
-                  // } else if (!_boxAccounts.containsKey(value)) {
-                  //   return "Username is not registered.";
-                  // }
-
+                  if (value == null || value.isEmpty) {
+                    return "Please enter email.";
+                  }
                   return null;
                 },
               ),
@@ -102,13 +103,9 @@ class _LoginState extends State<Login> {
                   ),
                 ),
                 validator: (String? value) {
-                  // if (value == null || value.isEmpty) {
-                  //   return "Please enter password.";
-                  // } else if (value !=
-                  //     _boxAccounts.get(_controllerUsername.text)) {
-                  //   return "Wrong password.";
-                  // }
-
+                  if (value == null || value.isEmpty) {
+                    return "Please enter password.";
+                  }
                   return null;
                 },
               ),
@@ -122,19 +119,30 @@ class _LoginState extends State<Login> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState?.validate() ?? false) {
-                        // _boxLogin.put("loginStatus", true);
-                        // _boxLogin.put("userName", _controllerUsername.text);
+                        // check login
+                        UserCredential loginResult;
+                        loginResult = await auth.signInEmail(
+                            _controllerEmail.text, _controllerPassword.text);
+                        if (loginResult != null) {
+                          Doctor doctor = Doctor();
+                          doctor.id = loginResult.user!.uid;
+                          print(doctor.id);
+                          doctor.email = _controllerEmail.text;
+                          doctor.password = _controllerPassword.text;
 
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return Home();
-                            },
-                          ),
-                        );
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return Home(doctor);
+                              },
+                            ),
+                          );
+                        } else {
+                          // print massage to the user to change pass or email
+                        }
                       }
                     },
                     child: const Text("Login"),
@@ -172,7 +180,7 @@ class _LoginState extends State<Login> {
   @override
   void dispose() {
     _focusNodePassword.dispose();
-    _controllerUsername.dispose();
+    _controllerEmail.dispose();
     _controllerPassword.dispose();
     super.dispose();
   }

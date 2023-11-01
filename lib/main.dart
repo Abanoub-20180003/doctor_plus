@@ -5,9 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_plus/Controller/db_constants.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  // initialize all static vars
+  //dbConstants.doctorsRef.
+
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );

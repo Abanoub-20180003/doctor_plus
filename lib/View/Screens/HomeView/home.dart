@@ -1,3 +1,5 @@
+import 'package:doctor_plus/Controller/firestore_crud.dart';
+import 'package:doctor_plus/Model/doctor.dart';
 import 'package:flutter/material.dart';
 //import 'package:hive_flutter/hive_flutter.dart';
 import 'package:doctor_plus/View/Screens/LoginView/login.dart';
@@ -7,7 +9,12 @@ import 'package:doctor_plus/View/Screens/SearchView/view_search_patinets.dart';
 import 'package:doctor_plus/View/Style/color_manager.dart';
 
 class Home extends StatelessWidget {
-  Home({super.key});
+  Doctor doctor = Doctor();
+  Home(Doctor doctro, {super.key}) {
+    // TODO: implement Home
+    this.doctor = doctro;
+  }
+
   final List<Patient> patientList = [];
   final ButtonStyle homeButtonsStyle = ElevatedButton.styleFrom(
       backgroundColor: ColorManager.grey,
@@ -74,7 +81,7 @@ class Home extends StatelessWidget {
             // Search Button
             ElevatedButton(
                 child: Text('Search...'),
-                onPressed: () {
+                onPressed: () async {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (context) => SearchBlock()));
                 },
@@ -89,7 +96,9 @@ class Home extends StatelessWidget {
                   final newPatient = await Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => newPatientForm()));
+                          builder: (context) => newPatientForm(
+                                doctor: this.doctor,
+                              )));
                   // store the new patient in the list of patients
                   patientList.add(newPatient);
                   print(patientList.length);

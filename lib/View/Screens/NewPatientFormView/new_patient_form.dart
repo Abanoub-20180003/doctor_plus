@@ -1,3 +1,4 @@
+import 'package:doctor_plus/Model/doctor.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:doctor_plus/Model/patient.dart';
@@ -6,7 +7,8 @@ import 'package:doctor_plus/Controller/firestore_crud.dart';
 enum ganderGroup { male, female }
 
 class newPatientForm extends StatefulWidget {
-  const newPatientForm({Key? key}) : super(key: key);
+  final Doctor doctor;
+  const newPatientForm({Key? key, required this.doctor}) : super(key: key);
 
   @override
   _newPatientForm createState() => _newPatientForm();
@@ -577,7 +579,7 @@ class _newPatientForm extends State<newPatientForm> {
           ),
         ),
         centerTitle: true,
-        backgroundColor: Colors.blue,
+        //backgroundColor: Colors.blue,
       ),
       body: Stepper(
         type: StepperType.vertical,
@@ -592,6 +594,7 @@ class _newPatientForm extends State<newPatientForm> {
             // print summary of the inpout values
             // store data in patient object
             Patient p = new Patient();
+            p.userId = widget.doctor.id;
             p.no = No.text;
             p.rank = Rank.text;
             p.name = name.text;

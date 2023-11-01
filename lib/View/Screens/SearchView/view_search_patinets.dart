@@ -5,7 +5,6 @@ import 'package:doctor_plus/Controller/firestore_crud.dart';
 
 class SearchBlock extends StatefulWidget {
   // crud operation opject
-
   SearchBlock();
   @override
   _SearchBlockState createState() => _SearchBlockState();
@@ -16,18 +15,23 @@ class _SearchBlockState extends State<SearchBlock> {
   final TextEditingController _searchController = TextEditingController();
   List<Patient> _AllpatientList = [];
   List<Patient> _filteredList = [];
-  _SearchBlockState();
+
+  //_SearchBlockState();
 
   // create intial state
   @override
   void initState() {
     firestroeCRUD db = firestroeCRUD();
     _AllpatientList = db.getPatients();
-    setState(() {
-      _AllpatientList.sort((a, b) => a.name!.compareTo(b.name!));
-      _filteredList = _AllpatientList;
-      super.initState();
-    });
+    _AllpatientList.sort((a, b) => a.name!.compareTo(b.name!));
+    _filteredList = _AllpatientList;
+    super.initState();
+    // setState(() {
+    //   _AllpatientList = db.getPatients();
+    //   _AllpatientList.sort((a, b) => a.name!.compareTo(b.name!));
+    //   _filteredList = _AllpatientList;
+    //   super.initState();
+    // });
   }
 
   @override
@@ -48,7 +52,7 @@ class _SearchBlockState extends State<SearchBlock> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('flutterassets.com'),
+        title: const Text('Search...'),
       ),
       body: Padding(
           padding: const EdgeInsets.all(8.0),
