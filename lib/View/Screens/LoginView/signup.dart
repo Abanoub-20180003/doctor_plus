@@ -1,8 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 //import 'package:hive_flutter/hive_flutter.dart';
-import 'package:doctor_plus/Controller/authentication.dart';
-import 'package:doctor_plus/Controller/firestore_crud.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});
@@ -12,8 +9,6 @@ class Signup extends StatefulWidget {
 }
 
 class _SignupState extends State<Signup> {
-  Authentication auth = Authentication();
-  firestroeCRUD db = firestroeCRUD();
   final GlobalKey<FormState> _formKey = GlobalKey();
 
   final FocusNode _focusNodeEmail = FocusNode();
@@ -178,37 +173,30 @@ class _SignupState extends State<Signup> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                     ),
-                    onPressed: () async {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        UserCredential signUpResult;
-                        signUpResult = await auth.signUpWithEmail(
-                            _controllerEmail.text, _controllerPassword.text);
-                        if (signUpResult != null) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              width: 200,
-                              backgroundColor:
-                                  Theme.of(context).colorScheme.secondary,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(10),
-                              ),
-                              behavior: SnackBarBehavior.floating,
-                              content: const Text("Registered Successfully"),
-                            ),
-                          );
-                          // add user to doctors firestore
-                          db.addDocotr(
-                              _controllerUsername.text,
-                              _controllerEmail.text,
-                              _controllerPassword.text,
-                              signUpResult.user!.uid);
-                          _formKey.currentState?.reset();
-                          // back to ligin
-                          Navigator.pop(context);
-                        } else {
-                          // print error message
-                        }
-                      }
+                    onPressed: () {
+                      // if (_formKey.currentState?.validate() ?? false) {
+                      //   _boxAccounts.put(
+                      //     _controllerUsername.text,
+                      //     _controllerConFirmPassword.text,
+                      //   );
+
+                      //   ScaffoldMessenger.of(context).showSnackBar(
+                      //     SnackBar(
+                      //       width: 200,
+                      //       backgroundColor:
+                      //           Theme.of(context).colorScheme.secondary,
+                      //       shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(10),
+                      //       ),
+                      //       behavior: SnackBarBehavior.floating,
+                      //       content: const Text("Registered Successfully"),
+                      //     ),
+                      //   );
+
+                      //   _formKey.currentState?.reset();
+
+                      //   Navigator.pop(context);
+                      // }
                     },
                     child: const Text("Register"),
                   ),

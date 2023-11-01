@@ -5,6 +5,7 @@ import 'package:doctor_plus/Controller/firestore_crud.dart';
 
 class SearchBlock extends StatefulWidget {
   // crud operation opject
+
   SearchBlock();
   @override
   _SearchBlockState createState() => _SearchBlockState();
@@ -15,23 +16,19 @@ class _SearchBlockState extends State<SearchBlock> {
   final TextEditingController _searchController = TextEditingController();
   List<Patient> _AllpatientList = [];
   List<Patient> _filteredList = [];
-
-  //_SearchBlockState();
+  _SearchBlockState();
 
   // create intial state
   @override
   void initState() {
     firestroeCRUD db = firestroeCRUD();
     _AllpatientList = db.getPatients();
-    _AllpatientList.sort((a, b) => a.name!.compareTo(b.name!));
     _filteredList = _AllpatientList;
-    super.initState();
-    // setState(() {
-    //   _AllpatientList = db.getPatients();
-    //   _AllpatientList.sort((a, b) => a.name!.compareTo(b.name!));
-    //   _filteredList = _AllpatientList;
-    //   super.initState();
-    // });
+    setState(() {
+      _AllpatientList.sort((a, b) => a.name!.compareTo(b.name!));
+      _filteredList = _AllpatientList;
+      super.initState();
+    });
   }
 
   @override
@@ -39,12 +36,10 @@ class _SearchBlockState extends State<SearchBlock> {
     _searchController.dispose();
     super.dispose();
   }
-
   void filterPatientsBySearchText(String searchText) {
     setState(() {
-      _filteredList = _AllpatientList.where((_patient) =>
-              _patient.name!.toLowerCase().contains(searchText.toLowerCase()))
-          .toList();
+      _filteredList =
+        searchText != null || searchText != '' ? _AllpatientList.where((_patient) => _patient.name!.toLowerCase().contains(searchText.toLowerCase())).toList() : [];
     });
   }
 
@@ -52,7 +47,7 @@ class _SearchBlockState extends State<SearchBlock> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Search...'),
+        title: const Text('flutterassets.com'),
       ),
       body: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -106,15 +101,22 @@ Widget _searchBox(
 
 // patients list widget
 Widget _buildList(List patientList, BuildContext context) {
-  return ListView.builder(
-      itemCount: patientList.length,
-      itemBuilder: (BuildContext context, int index) {
-        Patient data = patientList[index];
-        return Card(
-          elevation: 8.0,
-          child: Container(
-            child: cardTitle(data, context),
-          ),
-        );
-      });
+  return patientList.length == 0 ? Text('No Users Found'):Expanded(
+    child: ListView.builder(
+        itemCount: patientList.length,
+        itemBuilder: (BuildContext context, int index) {
+          Patient data = patientList[index];
+          return Card(
+            elevation: 8.0,
+            child: Column(
+              children: [
+                Container(
+                  child: cardTitle(data, context),
+                ),
+                SizedBox(height: 10,),
+              ],
+            ),
+          );
+        }),
+  );
 }
