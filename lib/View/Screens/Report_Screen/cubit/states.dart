@@ -1,57 +1,43 @@
 
 
 
-abstract class DrugStates{}
+abstract class ReportStates{}
 
-class DrugInitialState extends DrugStates {}
-
-
-class DrugChangeBottomNavState extends DrugStates {}
-
-class DrugLoadingHomeDataState extends DrugStates {}
-
-class DrugSuccessHomeDataState extends DrugStates {}
-
-class DrugErrorHomeDataState extends DrugStates {}
+class ReportInitialState extends ReportStates {}
 
 
+class ReportChangeBottomNavState extends ReportStates {}
 
+class ReportLoadingHomeDataState extends ReportStates {}
 
+class ReportSuccessHomeDataState extends ReportStates {}
 
-class DrugLoadingGetDataState extends DrugStates {}
-
-class DrugLoadingSuccessState extends DrugStates {}
-
-class DrugLoadingErrorState extends DrugStates {}
-
-
-
-
-class DrugLoadingDeleteDataState extends DrugStates {}
-
-class DrugDeleteSuccessState extends DrugStates {
-  final String msg;
-  DrugDeleteSuccessState(this.msg);
-}
-
-class DrugDeleteErrorState extends DrugStates {
-  final String msg;
-  DrugDeleteErrorState(this.msg);
-}
+class ReportErrorHomeDataState extends ReportStates {}
 
 
 
 
 
+class DrugLoadingGetDataState extends ReportStates {}
 
-class DrugLoadingAddDataState extends DrugStates {}
+class DrugLoadingSuccessState extends ReportStates {}
 
-class DrugSuccessAddState extends DrugStates {
-  final String msg;
-  DrugSuccessAddState(this.msg);
-}
+class DrugLoadingErrorState extends ReportStates {}
 
-class DrugErrorAddState extends DrugStates {
-  final String msg;
-  DrugErrorAddState(this.msg);
-}
+
+
+
+// class DrugLoadingDeleteDataState extends DrugStates {}
+//
+// class DrugDeleteSuccessState extends DrugStates {
+//   final String msg;
+//   DrugDeleteSuccessState(this.msg);
+// }
+//
+// class DrugDeleteErrorState extends DrugStates {
+//   final String msg;
+//   DrugDeleteErrorState(this.msg);
+// }
+//
+
+

@@ -3,6 +3,7 @@ import 'package:doctor_plus/View/Layout/Shop_app/ShopLayout.dart';
 import 'package:doctor_plus/View/Layout/colors.dart';
 import 'package:doctor_plus/View/Layout/components/components.dart';
 import 'package:doctor_plus/View/Screens/Drug_Screen/cubit/cubit.dart';
+import 'package:doctor_plus/View/Screens/Report_Screen/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -54,17 +55,8 @@ class _newPatientForm extends State<new_report_form> {
     'Other'
   ];
   Map selectedMedicalHistory = new Map();
-  // History Of Illness
-  // - GYN/OB History
 
-  // - Past Surgical History
-  // - Family Medical History
-  // - Immunization
 
-  // Drug History
-  // Current Drug
-
-  // form sections as steps
   List<Step> stepList() => [
         // General info
         Step(
@@ -146,8 +138,8 @@ class _newPatientForm extends State<new_report_form> {
     super.initState();
   }
 
-  // function to drow drag table
-  // Input Form - Drag Table
+
+
   List<Widget> createMedicalHistoryTable() {
     List<Widget> allRows = []; //For Saving all Created Rows
 
@@ -208,25 +200,8 @@ class _newPatientForm extends State<new_report_form> {
         //   }
 
         // },
-        child:  BlocConsumer<DrugCubit, DrugStates>(
+        child:  BlocConsumer<ReportCubit, ReportStates>(
         listener: (context, state) {
-
-       if (state is DrugSuccessAddState || state is DrugErrorAddState )
-        {
-          if(state is DrugSuccessAddState )
-            {
-              showToast(msg: state.msg,
-                  ToastStatus: ToastColor.SUCCESS);
-              navigateAndFinsih(context,ShopLayout());
-            }
-          else if(state is DrugErrorAddState)
-            {
-              showToast(msg: state.msg,
-                  ToastStatus: ToastColor.ERROR);
-              navigateAndFinsih(context,ShopLayout());
-            }
-
-        }
 
     },
     builder: (context, state) {

@@ -4,6 +4,7 @@ import 'package:doctor_plus/View/Layout/colors.dart';
 import 'package:doctor_plus/View/Screens/Drug_Screen/cubit/cubit.dart';
 import 'package:doctor_plus/View/Screens/HomeView/home.dart';
 import 'package:doctor_plus/View/Screens/LoginView/login.dart';
+import 'package:doctor_plus/View/Screens/Report_Screen/cubit/cubit.dart';
 import 'package:doctor_plus/main_app.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -44,6 +45,12 @@ class MyApp extends StatelessWidget {
           BlocProvider(
 
               create: (context) => ShopCubit()
+
+          ),
+
+          BlocProvider(
+
+              create: (context) => ReportCubit(),
 
           ),
 

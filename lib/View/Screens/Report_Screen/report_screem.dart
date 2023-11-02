@@ -7,6 +7,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:doctor_plus/View/Layout/components/components.dart';
 import 'package:doctor_plus/View/Screens/Drug_Screen/cubit/cubit.dart';
 import 'package:doctor_plus/View/Screens/Drug_Screen/new_drug_form.dart';
+import 'package:doctor_plus/View/Screens/Report_Screen/cubit/cubit.dart';
 import 'package:doctor_plus/View/Widgets/patient_card_title.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -53,7 +54,7 @@ class report_screem extends StatelessWidget {
   Widget build(BuildContext context) {
     ToastContext().init(context);
     return BlocProvider (
-        create: (BuildContext context)=> DrugCubit().drugs != null ? DrugCubit() :DrugCubit()..Get_Drugs(),
+        create: (BuildContext context)=> ReportCubit().drugs != null ? DrugCubit() :DrugCubit()..Get_Drugs(),
           //   () {
           // if(Brands_car == null)
           //   {
@@ -61,7 +62,7 @@ class report_screem extends StatelessWidget {
           //   }
 
         // },
-    child:  BlocConsumer<DrugCubit, DrugStates>(
+    child:  BlocConsumer<ReportCubit, ReportStates>(
         listener: (context, state) {
 
           // if(state is DrugLoadingSuccessState)
@@ -70,22 +71,22 @@ class report_screem extends StatelessWidget {
           //         ToastStatus: ToastColor.SUCCESS);
           //   }
 
-
-          if (state is DrugDeleteSuccessState || state is DrugDeleteErrorState )
-          {
-            if(state is DrugDeleteSuccessState )
-            {
-              showToast(msg: state.msg,ToastStatus: ToastColor.SUCCESS);
-
-            }
-            else if(state is DrugDeleteErrorState)
-            {
-              showToast(msg: state.msg,
-                  ToastStatus: ToastColor.ERROR);
-
-            }
-
-          }
+          //
+          // if (state is DrugDeleteSuccessState || state is DrugDeleteErrorState )
+          // {
+          //   if(state is DrugDeleteSuccessState )
+          //   {
+          //     showToast(msg: state.msg,ToastStatus: ToastColor.SUCCESS);
+          //
+          //   }
+          //   else if(state is DrugDeleteErrorState)
+          //   {
+          //     showToast(msg: state.msg,
+          //         ToastStatus: ToastColor.ERROR);
+          //
+          //   }
+          //
+          // }
 
         },
         builder: (context, state) {
@@ -329,7 +330,7 @@ class report_screem extends StatelessWidget {
   Widget _buildBottomSheet(BuildContext context,
       ScrollController scrollController,
       double bottomSheetOffset,) {
-    return BlocConsumer<DrugCubit, DrugStates>(
+    return BlocConsumer<ReportCubit, ReportStates>(
           listener: (context, state) {
 
           },
