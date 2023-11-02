@@ -208,7 +208,7 @@ class _newPatientForm extends State<new_report_form> {
     return Scaffold(
     appBar: AppBar(
     title: const Text(
-    'Add New Medicine',
+    'Add New Medicial Test',
     style: TextStyle(
     fontFamily: 'Bebas',
     letterSpacing: 1,

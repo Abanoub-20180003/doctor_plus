@@ -1,10 +1,31 @@
+import 'package:doctor_plus/View/Layout/colors.dart';
+import 'package:doctor_plus/View/Layout/components/constants.dart';
 import 'package:flutter/material.dart';
+
+import '../../Layout/components/components.dart';
 
 
 
 
 class profile extends StatelessWidget {
   late final String title;
+  var boxs = [
+    {"title":"Info","icon":"info.png","fun":(){
+      // cubit.changeBottomNavbar(2);
+    }},
+    {"title":"Organization","icon":"org.png","fun":()
+    {
+      // navigateTo(context, setting_profile_screen(),);
+    }},
+
+    {"title":"Fav-Iems","icon":"fav.png","fun":(){
+      // navigateTo(context, wishlist_screen(),);
+    }},
+    {"title":"Payments","icon":"pay_user.png","fun":(){
+      // navigateTo(context, show_payment_screen(),);
+    }},
+    // {"title":"info","icon":"info3.png"},
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +42,8 @@ class profile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   CircleAvatar(
-                    radius: 50,
+                    radius: 55,
+                    backgroundColor: thirdColor,
                     backgroundImage: AssetImage('Assets/images/2.png'),
                   )
                 ],
@@ -37,7 +59,7 @@ class profile extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                          child: Text('Abanob Kamal', style: TextStyle(color: Colors.grey[800], fontSize: 25, fontWeight: FontWeight.bold),),
+                          child: Text('${doctor_con.email}', style: TextStyle(color: Colors.grey[800], fontSize: 25, fontWeight: FontWeight.bold),),
                         ),
                         Container(
                           child: Text('Doctor', style: TextStyle(color: Colors.blueGrey[400], fontSize: 14, fontWeight: FontWeight.w600),),
@@ -86,6 +108,19 @@ class profile extends StatelessWidget {
                   color: Colors.blueGrey[200],
                 ),
               ),
+              SizedBox(height: 10,),
+              Container(
+                height: 120,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                  child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (context,index)=> box(boxs[index]["title"],boxs[index]["icon"],boxs[index]["fun"],context),
+                      separatorBuilder: (context,index)=> SizedBox(width: 10,),
+                      itemCount: boxs.length),
+                ),
+              ),
+              SizedBox(height: 10,),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -133,6 +168,140 @@ class profile extends StatelessWidget {
                   ),
                 ],
               ),
+              SizedBox(height: 10,),
+              Container(
+                width: double.infinity,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: defaultColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Padding(
+                          padding: const EdgeInsets.all(5.0),
+                          child: Column(
+                            children: [
+
+                              TextButton(
+                                style: ButtonStyle(padding:MaterialStateProperty.all<EdgeInsets>(
+                                    EdgeInsets.all(0)), ),
+                                onPressed: (){
+                                 // navigateTo(context, change_password_screen());
+                                  },
+                                child: Container(
+                                  width: double.infinity,
+                                  color: defaultColor,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.password_rounded, color:  Colors.grey[300], size: 20,),
+                                        SizedBox(width: 10,),
+                                        Text('Change Password' , style: TextStyle(color: Colors.grey[300], fontSize: 15, fontWeight: FontWeight.bold),),
+                                        Spacer(),
+                                        TextButton(onPressed: (){
+                                          //navigateTo(context, change_password_screen());
+                                          }, child: CircleAvatar(backgroundColor: secondColor,
+                                            radius: 15,
+                                            child: Icon(Icons.arrow_forward_rounded , color: Colors.white, size: 15,)))
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              TextButton(
+                                style: ButtonStyle(padding:MaterialStateProperty.all<EdgeInsets>(
+                                    EdgeInsets.all(0)), ),
+                                onPressed: (){
+                                 // ShopCubit.get(context).changeBottomNavbar(2);
+                                  },
+                                child: Container(
+                                  width: double.infinity,
+                                  color: defaultColor,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.language, color: Colors.grey[300], size: 20,),
+                                        SizedBox(width: 10,),
+                                        Text('Change Language' , style: TextStyle(color:Colors.grey[300], fontSize: 15, fontWeight: FontWeight.bold),),
+                                        Spacer(),
+                                        TextButton(onPressed: (){
+                                         // ShopCubit.get(context).changeBottomNavbar(2);
+                                          }, child: CircleAvatar(backgroundColor: secondColor,
+                                            radius: 15,
+                                            child: Icon(Icons.arrow_forward_rounded , color: Colors.white,size: 15, )))
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+
+                              TextButton(
+                                style: ButtonStyle(padding:MaterialStateProperty.all<EdgeInsets>(
+                                    EdgeInsets.all(0)), ),
+                                onPressed: (){ },
+                                child: Container(
+                                  width: double.infinity,
+                                  color: defaultColor,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.policy_sharp, color: Colors.grey[300], size: 20,),
+                                        SizedBox(width: 10,),
+                                        Text('Privacy Policy' , style: TextStyle(color:Colors.grey[300], fontSize: 15, fontWeight: FontWeight.bold),),
+                                        Spacer(),
+                                        TextButton(onPressed: (){}, child: CircleAvatar(backgroundColor: secondColor,
+                                            radius: 15,
+                                            child: Icon(Icons.arrow_forward_rounded , color: Colors.white,size: 15, )))
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+
+                              TextButton(
+                                style: ButtonStyle(padding:MaterialStateProperty.all<EdgeInsets>(
+                                    EdgeInsets.all(0)), ),
+                                onPressed: (){
+                                 // navigateTo(context, setting_screen());
+                                  },
+                                child: Container(
+                                  width: double.infinity,
+                                  color: defaultColor,
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
+                                    child: Row(
+                                      children: [
+                                        Icon(Icons.info_outline, color: Colors.grey[300], size: 20,),
+                                        SizedBox(width: 10,),
+                                        Text('About' , style: TextStyle(color:Colors.grey[300], fontSize: 15, fontWeight: FontWeight.bold),),
+                                        Spacer(),
+                                        TextButton(onPressed: (){
+                                          //navigateTo(context, setting_screen());
+                                          },  child: CircleAvatar(backgroundColor: secondColor,
+                                            radius: 15,
+                                            child: Icon(Icons.arrow_forward_rounded , color: Colors.white,size: 15, )))
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
               Container(
                 padding: EdgeInsets.only(top: 20),
                 child: Divider(

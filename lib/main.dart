@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
 
+import 'package:doctor_plus/Model/doctor.dart';
+import 'package:doctor_plus/View/Layout/Shop_app/ShopLayout.dart';
 import 'package:doctor_plus/View/Layout/colors.dart';
+import 'package:doctor_plus/View/Layout/components/constants.dart';
 import 'package:doctor_plus/View/Screens/Drug_Screen/cubit/cubit.dart';
 import 'package:doctor_plus/View/Screens/HomeView/home.dart';
 import 'package:doctor_plus/View/Screens/LoginView/login.dart';
@@ -16,10 +20,13 @@ import 'View/Layout/Shop_app/share_screen2.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'network/Local/chaced_helper.dart';
+
 StreamController<bool> _internetConnectionController = StreamController<bool>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await ChacheHelper.init();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
@@ -27,14 +34,26 @@ void main() async {
     _internetConnectionController.add(status == InternetConnectionStatus.connected);
   });
 
-  runApp(MyApp(share_screen: share_screen2()));
+  Widget widget = Login();
+  String? token2 = ChacheHelper.getData(key: 'token');
+
+    if (token2 != null) {
+      final doctorMap = jsonDecode(token2);
+      widget = ShopLayout();
+      doctor_con = Doctor.fromJson(doctorMap);
+    }
+
+
+
+  runApp(MyApp(start_screem:widget,share_screen: share_screen2()));
 }
 
 class MyApp extends StatelessWidget {
 
+  final Widget start_screem ;
   final Widget share_screen ;
 
-  MyApp({required  this.share_screen});
+  MyApp({required this.start_screem,required  this.share_screen});
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +94,7 @@ class MyApp extends StatelessWidget {
                     bool isConnected = snapshot.data!;
                     print(" Look At Connection H a -------------------------------------------------------- : "+isConnected.toString());
                     return Scaffold(
-                      body: isConnected == true ? Login() : share_screen2(),
+                      body: isConnected == true ? start_screem : share_screen2(),
                     );
                   }
               ));

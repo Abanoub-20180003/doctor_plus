@@ -88,7 +88,27 @@
 //
 //
 //
-// String token = '';
+import 'package:doctor_plus/Model/doctor.dart';
+import 'package:doctor_plus/View/Layout/components/components.dart';
+import 'package:doctor_plus/View/Screens/LoginView/login.dart';
+import 'package:doctor_plus/network/Local/chaced_helper.dart';
+
+
+Doctor  doctor_con = new Doctor();
+
+void signOut(context)async
+{
+  ChacheHelper.RemoveData(key:'token').then((value) => {
+    if(value)
+      {
+        doctor_con=Doctor(),
+        navigateAndFinsih(context, Login(),)
+      }
+  });
+}
+
+
+
 // String email_in = '';
 // int code = 0 ;
 //

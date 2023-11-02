@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../Screens/HomeView/home.dart';
+import '../../../Screens/Report_Screen/report_screem.dart';
 
 class ShopCubit extends Cubit<ShopStates> {
   ShopCubit() :super(ShopInitialState());
@@ -40,7 +41,7 @@ class ShopCubit extends Cubit<ShopStates> {
   List<Widget> Screens = [
     Home(),
     drug_screen(),
-    Home(),
+    report_screem(),
     profile(),
 
   ];

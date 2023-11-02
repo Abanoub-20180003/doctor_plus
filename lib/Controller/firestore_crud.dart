@@ -5,6 +5,18 @@ import 'package:doctor_plus/View/Screens/NewPatientFormView/new_patient_form.dar
 import 'db_constants.dart';
 
 class firestroeCRUD {
+
+  Future<void> addDocotr(
+      String name, String email, String pass, String id) async {
+    dbConstants.doctorsRef
+        .add({'email': email, 'id': id, 'name': name, 'password': pass})
+        .then((value) => print("Doctor Added"))
+        .catchError((error) => print("Failed to add the doctor: $error"));
+  }
+
+
+
+
   Future<void> addPatient(Patient patient) async {
     dbConstants.patientsRef
         .add({

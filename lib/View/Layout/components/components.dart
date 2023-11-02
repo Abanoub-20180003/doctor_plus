@@ -1,5 +1,6 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:doctor_plus/View/Layout/colors.dart';
 import 'package:flutter/material.dart';
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
@@ -258,7 +259,7 @@ Widget box_main_market_brands (text,image,fun,context) =>Container(
 
 Widget box (text,image,fun,context) =>Container(
   decoration: BoxDecoration(
-    // color: thirdColor,
+    color: thirdColor,
     borderRadius: BorderRadius.circular(10),
   ),
   child: Padding(

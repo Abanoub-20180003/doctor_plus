@@ -20,7 +20,7 @@ class ReportCubit extends Cubit<ReportStates> {
   int current_index = 0;
   firestroeCRUD db = firestroeCRUD();
 
-  List<Drug> drugs = [];
+  List<Drug> reports = [];
 
 
 
@@ -46,7 +46,7 @@ class ReportCubit extends Cubit<ReportStates> {
   //   });
   // }
 
-//
+
 //   void Get_Drugs ()async
 //   {
 //     emit(DrugLoadingGetDataState());

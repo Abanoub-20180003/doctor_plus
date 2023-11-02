@@ -1,6 +1,8 @@
 
 
+import 'package:doctor_plus/Model/doctor.dart';
 import 'package:doctor_plus/View/Layout/colors.dart';
+import 'package:doctor_plus/View/Layout/components/constants.dart';
 import 'package:flutter/material.dart';
 
 import 'package:doctor_plus/View/Screens/LoginView/login.dart';
@@ -88,14 +90,15 @@ class Home extends StatelessWidget {
               "Welcome 🎉",
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 3),
             Text(
               //local storage
               //_boxLogin.get("userName"),
-              "Admin",
-              style: Theme.of(context).textTheme.headlineLarge,
+              "${doctor_con.email}",
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+
             ),
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
             // Search Button
             ElevatedButton(
                 style: homeButtonsStyle,

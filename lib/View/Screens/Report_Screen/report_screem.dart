@@ -42,6 +42,7 @@ class report_screem extends StatelessWidget {
   var name = TextEditingController();
   var timeController = TextEditingController();
   var dateController = TextEditingController();
+
   var boxs = [
     {"title":"info","icon":"info3.png","fun":(){}},
     {"title":"cars","icon":"carrr.png","fun":(){ }},
@@ -54,7 +55,8 @@ class report_screem extends StatelessWidget {
   Widget build(BuildContext context) {
     ToastContext().init(context);
     return BlocProvider (
-        create: (BuildContext context)=> ReportCubit().drugs != null ? DrugCubit() :DrugCubit()..Get_Drugs(),
+        create: (BuildContext context)=> ReportCubit(),
+            //.drugs != null ? DrugCubit() :DrugCubit()..Get_Drugs(),
           //   () {
           // if(Brands_car == null)
           //   {

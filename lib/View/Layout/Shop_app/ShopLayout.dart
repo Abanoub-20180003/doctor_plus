@@ -1,6 +1,7 @@
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:doctor_plus/View/Layout/colors.dart';
+import 'package:doctor_plus/View/Layout/components/constants.dart';
 import 'package:doctor_plus/View/Screens/LoginView/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -65,15 +66,15 @@ class ShopLayout extends StatelessWidget {
                         // local storage
                         //_boxLogin.clear();
                         //_boxLogin.put("loginStatus", false);
-
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return const Login();
-                            },
-                          ),
-                        );
+                        signOut(context);
+                        // Navigator.pushReplacement(
+                        //   context,
+                        //   MaterialPageRoute(
+                        //     builder: (context) {
+                        //       return const Login();
+                        //     },
+                        //   ),
+                        // );
                       },
                       icon: const Icon(Icons.logout_rounded),
                     ),
