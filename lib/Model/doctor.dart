@@ -1,3 +1,3 @@
 class Doctor {
-  String? name, email, password, id;
+  String? name, email, password, id, organizationId;
 }
