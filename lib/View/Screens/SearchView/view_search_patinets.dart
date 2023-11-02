@@ -1,3 +1,4 @@
+import 'package:doctor_plus/View/Widgets/filter_dialog_button.dart';
 import 'package:flutter/material.dart';
 import 'package:doctor_plus/Model/patient.dart';
 import 'package:doctor_plus/View/Widgets/patient_card_title.dart';
@@ -26,12 +27,6 @@ class _SearchBlockState extends State<SearchBlock> {
     _AllpatientList.sort((a, b) => a.name!.compareTo(b.name!));
     _filteredList = _AllpatientList;
     super.initState();
-    // setState(() {
-    //   _AllpatientList = db.getPatients();
-    //   _AllpatientList.sort((a, b) => a.name!.compareTo(b.name!));
-    //   _filteredList = _AllpatientList;
-    //   super.initState();
-    // });
   }
 
   @override
@@ -58,6 +53,13 @@ class _SearchBlockState extends State<SearchBlock> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
+              Row(
+                children: [
+                  //_searchBox(_searchController, filterPatientsBySearchText),
+                  Spacer(),
+                  FilterDialogButton()
+                ],
+              ),
               _searchBox(_searchController, filterPatientsBySearchText),
               const SizedBox(
                 height: 8,

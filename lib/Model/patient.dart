@@ -12,8 +12,8 @@ class Patient {
       gander,
       occupation,
       specialHabit,
-      docId,
-      userId;
+      patientId,
+      doctorId;
   // address
   String? address, telHome, cellPhone;
   // boolean if patinet need to hospitalize

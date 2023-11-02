@@ -26,7 +26,7 @@ class firestroeCRUD {
   Future<void> addPatient(Patient patient) async {
     dbConstants.patientsRef
         .add({
-          'userId': patient.userId,
+          'userId': patient.doctorId,
           'no': patient.no,
           'rank': patient.rank,
           'name': patient.name,
@@ -42,7 +42,7 @@ class firestroeCRUD {
 
   Future<void> deletePatient(Patient patient) async {
     dbConstants.patientsRef
-        .doc(patient.docId)
+        .doc(patient.patientId)
         .delete()
         .then((value) => print("Patinet deleted"))
         .catchError((error) => print("Failed to delete the patinet: $error"));
@@ -51,7 +51,7 @@ class firestroeCRUD {
   Future<void> updatePatinet(Patient patient) async {
     // set fun removs all old values and rewrite it
     dbConstants.patientsRef
-        .doc(patient.docId)
+        .doc(patient.patientId)
         .set({
           'no': patient.no,
           'rank': patient.rank,
@@ -79,7 +79,7 @@ class firestroeCRUD {
 
   Patient _mapPatinetFromDoc(DocumentSnapshot doc) {
     Patient p = Patient();
-    p.docId = doc.id.toString();
+    p.patientId = doc.id.toString();
     p.no = doc['no'];
     p.rank = doc['rank'];
     p.name = doc['name'];
