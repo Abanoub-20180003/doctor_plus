@@ -1,12 +1,13 @@
 import 'dart:async';
 import 'dart:convert';
 
+
 import 'package:doctor_plus/Model/doctor.dart';
 import 'package:doctor_plus/View/Layout/Shop_app/ShopLayout.dart';
 import 'package:doctor_plus/View/Layout/colors.dart';
 import 'package:doctor_plus/View/Layout/components/constants.dart';
 import 'package:doctor_plus/View/Screens/Drug_Screen/cubit/cubit.dart';
-import 'package:doctor_plus/View/Screens/HomeView/home.dart';
+
 import 'package:doctor_plus/View/Screens/LoginView/login.dart';
 import 'package:doctor_plus/View/Screens/Report_Screen/cubit/cubit.dart';
 import 'package:doctor_plus/View/Screens/SearchView/cubit/cubit.dart';
@@ -18,6 +19,7 @@ import 'package:internet_connection_checker/internet_connection_checker.dart';
 import 'View/Layout/Shop_app/cubit/cubit.dart';
 import 'View/Layout/Shop_app/cubit/states.dart';
 import 'View/Layout/Shop_app/share_screen2.dart';
+import 'View/Style/theme_manager.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -37,34 +39,46 @@ void main() async {
 
   Widget widget = Login();
   String? token2 = ChacheHelper.getData(key: 'token');
+  bool? Dtheme = await ChacheHelper.getBoolean(key: 'theme');
+  if(Dtheme == null)
+    {
+      Dtheme = false;
+    }
 
-    if (token2 != null) {
+  if (token2 != null) {
       final doctorMap = jsonDecode(token2);
       widget = ShopLayout();
       doctor_con = Doctor.fromJson(doctorMap);
+      String? profile = ChacheHelper.getData(key: 'profile');
+      if(profile != null)
+        {
+          final doctorMap2 = jsonDecode(profile);
+          doctor_profile = Doctor.fromJson(doctorMap2);
+        }
     }
 
 
 
-  runApp(MyApp(start_screem:widget,share_screen: share_screen2()));
+  runApp(MyApp(start_screem:widget,share_screen: share_screen2(),theme: Dtheme,));
 }
 
 class MyApp extends StatelessWidget {
 
   final Widget start_screem ;
   final Widget share_screen ;
+  final bool?  theme ;
 
-  MyApp({required this.start_screem,required  this.share_screen});
+  MyApp({required this.start_screem,required  this.share_screen, required this.theme});
+
 
   @override
   Widget build(BuildContext context) {
-
     return MultiBlocProvider(
         providers: [
 
           BlocProvider(
 
-              create: (context) => ShopCubit()
+              create: (context) => ShopCubit()..SaveTheme(theme!)
 
           ),
           BlocProvider(
@@ -90,7 +104,7 @@ class MyApp extends StatelessWidget {
           return MaterialApp(
               title: 'Doctor App',
               color: defaultColor,
-
+              theme: ShopCubit.get(context).Darktheme == false ? ThemeManager.getAppLightTheme() :ThemeManager.getAppDarkTheme(),
               debugShowCheckedModeBanner: false,
 
               home:  StreamBuilder<bool>(

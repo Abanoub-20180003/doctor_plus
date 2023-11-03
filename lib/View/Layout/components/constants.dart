@@ -88,6 +88,8 @@
 //
 //
 //
+import 'dart:convert';
+
 import 'package:doctor_plus/Model/doctor.dart';
 import 'package:doctor_plus/View/Layout/components/components.dart';
 import 'package:doctor_plus/View/Screens/LoginView/login.dart';
@@ -95,6 +97,7 @@ import 'package:doctor_plus/network/Local/chaced_helper.dart';
 
 
 Doctor  doctor_con = new Doctor();
+Doctor  doctor_profile = new Doctor();
 
 void signOut(context)async
 {
@@ -102,9 +105,44 @@ void signOut(context)async
     if(value)
       {
         doctor_con=Doctor(),
-        navigateAndFinsih(context, Login(),)
       }
   });
+
+  ChacheHelper.RemoveData(key:'profile').then((value) => {
+    if(value)
+      {
+        doctor_profile=Doctor(),
+      }
+  });
+  navigateAndFinsih(context, Login());
+}
+
+
+void update_profile_local()async
+{
+
+  ChacheHelper.RemoveData(key:'profile');
+  final doctor_data_Json = jsonEncode(doctor_profile.toJson());
+  ChacheHelper.saveData(key: 'profile',
+    value: doctor_data_Json,);
+}
+
+void update_theme_app({
+  required bool theme
+})async
+{
+ bool? theme2 = ChacheHelper.getData(key:'theme');
+  if (theme2 != null) {
+    ChacheHelper.RemoveData(key:'theme');
+
+    ChacheHelper.putData(key: 'theme',
+      value: theme,);
+  } else {
+
+    ChacheHelper.putData(key: 'theme',
+      value: theme,);
+  }
+
 }
 
 

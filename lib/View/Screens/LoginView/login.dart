@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:doctor_plus/Controller/firestore_crud.dart';
 import 'package:doctor_plus/Model/doctor.dart';
 import 'package:doctor_plus/View/Layout/Shop_app/ShopLayout.dart';
 import 'package:doctor_plus/View/Layout/colors.dart';
@@ -31,7 +32,7 @@ class _LoginState extends State<Login> {
   final FocusNode _focusNodePassword = FocusNode();
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
-
+  firestroeCRUD db = firestroeCRUD();
   // local login
   bool _obscurePassword = true;
   //final Box _boxLogin = Hive.box("login");
@@ -139,6 +140,13 @@ class _LoginState extends State<Login> {
                         loginResult = await auth.signInEmail(
                             _controllerEmail.text, _controllerPassword.text);
                         if (loginResult != null) {
+
+                          print("${loginResult.user!.tenantId.toString()}");
+                          print("===============ngma==============================");
+                          await db.getDocById(doctorId: loginResult.user!.uid.toString());
+                          print("===============ngma==============================");
+
+
                           Doctor doctor = Doctor();
                           doctor.id = loginResult.user!.uid;
                           print(doctor.id);
@@ -146,7 +154,14 @@ class _LoginState extends State<Login> {
                           doctor.email = _controllerEmail.text;
                           doctor.password = _controllerPassword.text;
                           doctor_con = doctor;
+
+
                           final doctorJson = jsonEncode(doctor.toJson());
+                          final doctor_data_Json = jsonEncode(doctor_profile.toJson());
+
+                          ChacheHelper.saveData(key: 'profile',
+                            value: doctor_data_Json,);
+
                           ChacheHelper.saveData(key: 'token',
                             value: doctorJson,)
                               .then((value) =>

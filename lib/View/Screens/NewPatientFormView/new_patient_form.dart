@@ -1,6 +1,4 @@
 import 'package:doctor_plus/View/Layout/colors.dart';
-import 'package:doctor_plus/View/Widgets/dropdownListWithCheckbox.dart';
-import 'package:doctor_plus/View/Widgets/drug_table.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:doctor_plus/Model/patient.dart';
@@ -17,7 +15,7 @@ class newPatientForm extends StatefulWidget {
 
 class _newPatientForm extends State<newPatientForm> {
   int _activeStepIndex = 0;
-  List<String> selectedMedicaltests = [];
+
   // from fildes
   // General info
   TextEditingController No = TextEditingController();
@@ -78,7 +76,6 @@ class _newPatientForm extends State<newPatientForm> {
     'Psych / eating',
     'Other'
   ];
-
   Map selectedMedicalHistory = new Map();
   // - Past Surgical History
   // - Family Medical History
@@ -285,13 +282,13 @@ class _newPatientForm extends State<newPatientForm> {
                 ],
               ),
             )),
-        // Add Medical Test
+        // Reasons of visit
         Step(
             state:
                 _activeStepIndex <= 2 ? StepState.editing : StepState.complete,
             isActive: _activeStepIndex >= 2,
             title: const Text(
-              'Add Medical Test',
+              'Reasons of visit',
               style: TextStyle(
                 fontFamily: 'Bebas',
                 letterSpacing: 2,
@@ -303,34 +300,178 @@ class _newPatientForm extends State<newPatientForm> {
                   const SizedBox(
                     height: 8,
                   ),
-                  DropdownListWithCheckbox(
-                      allOptions: ['p1', 'p2', 'p3'],
-                      selectedOptions: selectedMedicaltests),
-                  Text('Selected Options: ${selectedMedicaltests.join(', ')}'),
+                  DropdownButtonFormField(
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                    ),
+                    hint: Text('Select Value'),
+                    icon: const Icon(Icons.arrow_downward),
+                    elevation: 16,
+                    style: const TextStyle(color: Colors.black),
+                    onChanged: (String? value) {
+                      // This is called when the user selects an item.
+                      setState(() {
+                        selectedReasonsOfVisit = value!;
+                        isReasonOfVisitSelected = true;
+                      });
+                    },
+                    items: _reasonsOfVisitItems
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  ),
+                  TextField(
+                    // reasons of visit
+                    /* change this if read  only is set to false you can enter in text field or if it is set to true you cannot enter any text in TextField. */
+                    readOnly: !isReasonOfVisitSelected,
+                    controller: reasonOfVisitInputController,
+                    decoration: const InputDecoration(
+                      border: OutlineInputBorder(),
+                      labelText: 'Reason Of Visit',
+                    ),
+                  ),
                 ],
               ),
             )),
-        // Add Drugs
+        // History of illness
+        // - History Of present Illness
+        // - GYN/OB History
+        // - Medical History
+        // - Past Surgical History
+        // - Family Medical History
+        // - Immunization
         Step(
           // step 3
           state: _activeStepIndex <= 3 ? StepState.editing : StepState.complete,
           isActive: _activeStepIndex >= 3,
           title: const Text(
-            'Add Drugs',
+            'History of illness',
             style: TextStyle(fontFamily: 'Bebas', letterSpacing: 2),
           ),
           content: Container(
             child: Column(
               children: [
-                Divider(),
+                TextField(
+                  // History of illness
+                  controller: historyOfIllnessTextController,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'History of illness',
+                  ),
+                ),
                 const SizedBox(
                   height: 8,
                 ),
                 Text(
-                  "Add Drugs",
+                  "GYN/OB History",
                   style: TextStyle(fontSize: 14),
                 ),
-                DrugTable(),
+                Divider(),
+                DropdownButtonFormField(
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(40),
+                    ),
+                  ),
+                  hint: Text('Select Value'),
+                  icon: const Icon(Icons.arrow_downward),
+                  elevation: 16,
+                  style: const TextStyle(color: Colors.black),
+                  onChanged: (String? value) {
+                    // This is called when the user selects an item.
+                    setState(() {
+                      selectedGYN_OB_History = value!;
+                      isReasonOfVisitSelected = true;
+                    });
+                  },
+                  items: _GYN_OB_items.map<DropdownMenuItem<String>>(
+                      (String value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Text(value),
+                    );
+                  }).toList(),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                Text(
+                  "Medical History",
+                  style: TextStyle(fontSize: 14),
+                ),
+                Divider(),
+                SingleChildScrollView(
+                    child: ConstrainedBox(
+                  constraints: BoxConstraints(
+                    minHeight: 100.0,
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      new Container(
+                        color: Colors.blueGrey[200],
+                        padding: EdgeInsets.only(top: 20.0, bottom: 10.0),
+                        alignment: FractionalOffset.center,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            //headers
+                            new Container(
+                              margin: EdgeInsets.all(0.0),
+                              child: new Row(
+                                  children: [
+                                new Container(
+                                  alignment: FractionalOffset.center,
+                                  width: 140.0,
+                                  margin: EdgeInsets.all(0.0),
+                                  padding: const EdgeInsets.only(
+                                      top: 5.0,
+                                      bottom: 5.0,
+                                      right: 3.0,
+                                      left: 3.0),
+                                  child: Text(
+                                    //Leave an empty text in Row(0) and Column (0)
+                                    "",
+                                    style: TextStyle(color: Colors.grey[800]),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )
+                              ]..addAll(columnHeaders
+                                      .map((header) => new Container(
+                                            alignment: FractionalOffset.center,
+                                            //width: 120.0,
+                                            margin: EdgeInsets.all(0.0),
+                                            padding: const EdgeInsets.only(
+                                                top: 5.0,
+                                                bottom: 5.0,
+                                                right: 3.0,
+                                                left: 20.0),
+                                            child: new Text(
+                                              header,
+                                              style: TextStyle(
+                                                  color: Colors.grey[800]),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ))
+                                      .toList())),
+                            ),
+                          ],
+                        ),
+                      )
+                    ]..addAll(createMedicalHistoryTable()), //Create Rows
+                  ),
+                )),
+                const SizedBox(
+                  height: 8,
+                ),
                 const SizedBox(
                   height: 8,
                 ),
@@ -338,6 +479,8 @@ class _newPatientForm extends State<newPatientForm> {
             ),
           ),
         ),
+        // Drug History
+        // - Current Drug
 
         // submit / save step
         Step(

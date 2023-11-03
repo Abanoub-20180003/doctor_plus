@@ -1,17 +1,12 @@
 
-import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
-import 'package:awesome_bottom_bar/widgets/inspired/inspired.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:doctor_plus/View/Layout/colors.dart';
 import 'package:doctor_plus/View/Layout/components/constants.dart';
 import 'package:doctor_plus/View/Screens/LoginView/login.dart';
-import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
-import 'package:floating_navbar/floating_navbar.dart';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
-
 
 import '../Loading_Screen/loading_screen.dart';
 import 'cubit/cubit.dart';
@@ -27,28 +22,7 @@ class ShopLayout extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const List<TabItem> items = [
-      TabItem(
-        icon: Icons.home,
-         title: 'Home',
-      ),
-      TabItem(
-        icon: Icons.search_sharp,
-        title: 'Shop',
-      ),
-      TabItem(
-        icon: Icons.favorite_border,
-        title: 'Wishlist',
-      ),
-      TabItem(
-        icon: Icons.shopping_cart_outlined,
-        title: 'Cart',
-      ),
-      TabItem(
-        icon: Icons.account_box,
-        title: 'profile',
-      ),
-    ];
+
     return BlocConsumer<ShopCubit,ShopStates>(
       listener:(context,state){
         // if(state is ShopSuccessGoToMarketState)
@@ -78,7 +52,6 @@ class ShopLayout extends StatelessWidget {
           condition: true,
           builder: (context)=>Scaffold(
             appBar: AppBar(
-              backgroundColor: defaultColor,
               title: const Text("DoctorP+" , style: TextStyle(color: Colors.white),),
               actions: [
                 // log out button
@@ -200,7 +173,7 @@ class ShopLayout extends StatelessWidget {
               onTap: (index){
                 shopCubit.changeBottomNavbar(index);
               },
-              unselectedItemColor: defaultColor,
+
               items: [
                 BottomNavigationBarItem(icon:Icon(Icons.home ,),label: 'Home' ),
                 BottomNavigationBarItem(icon:Icon(Icons.medical_information),label: 'Drug' ),
