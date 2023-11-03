@@ -58,10 +58,8 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
   shared_preferences: ^2.0.5
   flutter_native_splash: ^2.3.5
-  floating_bottom_navigation_bar: ^1.5.2
-  awesome_bottom_bar: ^1.2.4
-  floating_navbar: ^2.0.2
-  flutter_floating_bottom_bar: ^1.2.0
+  loader_overlay: ^2.1.0
+  switcher_button: ^0.0.4
 
 flutter_native_splash:
   color: "#42a5f5"
