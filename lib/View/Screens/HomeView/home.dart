@@ -12,6 +12,8 @@ import 'package:doctor_plus/View/Screens/SearchView/view_search_patinets.dart';
 import 'package:doctor_plus/View/Style/color_manager.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 
+import '../SearchView/search_screen.dart';
+
 class Home extends StatelessWidget {
 
 
@@ -105,7 +107,7 @@ class Home extends StatelessWidget {
                 child: Text('Search...',style: TextStyle(color:secondColor),),
                 onPressed: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SearchBlock()));
+                      MaterialPageRoute(builder: (context) => searchScreen()));
                 },
                 ),
             const SizedBox(height: 10),
