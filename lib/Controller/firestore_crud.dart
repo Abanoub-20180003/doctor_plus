@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_plus/Model/doctor.dart';
 import 'package:doctor_plus/Model/drug.dart';
 import 'package:doctor_plus/Model/patient.dart';
+import 'package:doctor_plus/View/Layout/components/constants.dart';
 import 'package:doctor_plus/View/Screens/NewPatientFormView/new_patient_form.dart';
 import 'db_constants.dart';
 
@@ -92,6 +94,63 @@ class firestroeCRUD {
 
 
 
+
+
+  Future<void> getDocById({
+    required String doctorId,
+  }) async {
+
+
+        try {
+          var querySnapshot = await FirebaseFirestore.instance.collection('doctors').where('id', isEqualTo: doctorId).limit(1).get();
+          if (querySnapshot.docs.isNotEmpty) {
+            // Assuming there's only one user with the specified id
+            DocumentSnapshot userDoc = querySnapshot.docs.first;
+            doctor_profile =  _mapDoctorFromDoc(userDoc);
+            print("===============================l1 ==============================================================");
+          } else {
+            // User with the specified id not found
+            print("==================================l2===========================================================");
+            doctor_profile = Doctor();
+          }
+        } catch (e) {
+          print("Error fetching user: $e");
+          doctor_profile = Doctor();
+          print("====================================l3=========================================================");
+        }
+
+  }
+
+
+  Future<void> updateDoctor(Doctor doc) async {
+    try {
+      await FirebaseFirestore.instance.collection('doctors').doc(doc.id).update({
+        'name': doc.name,
+      });
+      print("Doctor updated successfully");
+    } catch (error) {
+      print("Failed to update the doctor: $error");
+    }
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
  // -----------------------------------------
   Future<bool> addDrug(Drug drug) async {
     try{
@@ -136,6 +195,20 @@ class firestroeCRUD {
     p.gander = doc['gander'].toString();
     p.occupation = doc['occupation'].toString();
     p.specialHabit = doc['specialHabit'].toString();
+    return p;
+  }
+
+
+  Doctor _mapDoctorFromDoc(DocumentSnapshot doc) {
+    Doctor p = Doctor();
+    p.id = doc.id.toString();
+    p.name = doc['name'].toString();
+    p.email = doc['email'].toString();
+    p.image = doc['image'].toString();
+    // p.email = doc['email'].toString();
+    // p.password = doc['password'].toString();
+    //p.organizationId = doc['organizationId'];
+
     return p;
   }
 

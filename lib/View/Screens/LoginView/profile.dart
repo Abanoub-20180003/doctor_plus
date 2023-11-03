@@ -1,36 +1,39 @@
+import 'package:doctor_plus/View/Layout/Shop_app/cubit/cubit.dart';
 import 'package:doctor_plus/View/Layout/colors.dart';
 import 'package:doctor_plus/View/Layout/components/constants.dart';
 import 'package:flutter/material.dart';
+import 'package:switcher_button/switcher_button.dart';
 
 import '../../Layout/components/components.dart';
+import 'info/setting_profile_screen.dart';
 
 
 
 
 class profile extends StatelessWidget {
   late final String title;
-  var boxs = [
-    {"title":"Info","icon":"info.png","fun":(){
-      // cubit.changeBottomNavbar(2);
-    }},
-    {"title":"Organization","icon":"org.png","fun":()
-    {
-      // navigateTo(context, setting_profile_screen(),);
-    }},
-
-    {"title":"Fav-Iems","icon":"fav.png","fun":(){
-      // navigateTo(context, wishlist_screen(),);
-    }},
-    {"title":"Payments","icon":"pay_user.png","fun":(){
-      // navigateTo(context, show_payment_screen(),);
-    }},
-    // {"title":"info","icon":"info3.png"},
-  ];
 
   @override
   Widget build(BuildContext context) {
+    var boxs = [
+      {"title":"Info","icon":"info.png","fun":(){
+        navigateTo(context, setting_profile_screen(),);
+      }},
+      {"title":"Organization","icon":"org.png","fun":()
+      {
+        // navigateTo(context, setting_profile_screen(),);
+      }},
+
+      {"title":"Fav-Iems","icon":"fav.png","fun":(){
+        // navigateTo(context, wishlist_screen(),);
+      }},
+      {"title":"Payments","icon":"pay_user.png","fun":(){
+        // navigateTo(context, show_payment_screen(),);
+      }},
+      // {"title":"info","icon":"info3.png"},
+    ];
+
     return Scaffold(
-      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
           padding: EdgeInsets.all(20),
@@ -44,7 +47,7 @@ class profile extends StatelessWidget {
                   CircleAvatar(
                     radius: 55,
                     backgroundColor: thirdColor,
-                    backgroundImage: AssetImage('Assets/images/2.png'),
+                    backgroundImage: AssetImage('Assets/images/${doctor_profile.image}'),
                   )
                 ],
               ),
@@ -59,7 +62,7 @@ class profile extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                          child: Text('${doctor_con.email}', style: TextStyle(color: Colors.grey[800], fontSize: 25, fontWeight: FontWeight.bold),),
+                          child: Text('${doctor_profile.name}', style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),),
                         ),
                         Container(
                           child: Text('Doctor', style: TextStyle(color: Colors.blueGrey[400], fontSize: 14, fontWeight: FontWeight.w600),),
@@ -106,7 +109,7 @@ class profile extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   Container(
-                    padding: EdgeInsets.only(top: 30),
+                    padding: EdgeInsets.only(top: 15),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -120,7 +123,7 @@ class profile extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.only(top: 30),
+                    padding: EdgeInsets.only(top: 15),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -134,7 +137,7 @@ class profile extends StatelessWidget {
                     ),
                   ),
                   Container(
-                    padding: EdgeInsets.only(top: 30),
+                    padding: EdgeInsets.only(top: 15),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
@@ -233,13 +236,16 @@ class profile extends StatelessWidget {
                                       children: [
                                         Icon(Icons.language, color: Colors.grey[300], size: 20,),
                                         SizedBox(width: 10,),
-                                        Text('Change Language' , style: TextStyle(color:Colors.grey[300], fontSize: 15, fontWeight: FontWeight.bold),),
+                                        Text('Dark Theme' , style: TextStyle(color:Colors.grey[300], fontSize: 15, fontWeight: FontWeight.bold),),
                                         Spacer(),
-                                        TextButton(onPressed: (){
-                                         // ShopCubit.get(context).changeBottomNavbar(2);
-                                          }, child: CircleAvatar(backgroundColor: secondColor,
-                                            radius: 15,
-                                            child: Icon(Icons.arrow_forward_rounded , color: Colors.white,size: 15, )))
+                                        SwitcherButton(
+                                          offColor: thirdColor,
+                                          onColor: secondColor,
+                                          value:  ShopCubit.get(context).Darktheme,
+                                          onChange: (value) {
+                                            ShopCubit.get(context).changeTheme();
+                                            },),
+
                                       ],
                                     ),
                                   ),

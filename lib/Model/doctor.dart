@@ -1,13 +1,13 @@
 class Doctor {
-  String? name, email, password, id, organizationId;
+  String? name, email, password, id, organizationId, image;
 
   Doctor();
 
-  Doctor.data(this.name, this.email, this.password, this.id, this.organizationId);
+  Doctor.data(this.name, this.email, this.password, this.id, this.organizationId , this.image);
 
   factory Doctor.fromJson(Map<String, dynamic> json) {
     return Doctor.data(json['name'], json['email'], json['password'], json['id'],
-        json['organizationId']);
+        json['organizationId'] , json['image']);
   }
 
   Map<String, dynamic> toJson() {
@@ -17,6 +17,7 @@ class Doctor {
       'password': password,
       'id,': id,
       'organizationId': organizationId,
+      'image': image,
     };
   }
 }

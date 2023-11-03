@@ -1,6 +1,7 @@
 
 
 import 'package:doctor_plus/View/Layout/Shop_app/cubit/states.dart';
+import 'package:doctor_plus/View/Layout/components/constants.dart';
 import 'package:doctor_plus/View/Screens/Drug_Screen/Drug_Screen.dart';
 import 'package:doctor_plus/View/Screens/LoginView/profile.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,7 @@ class ShopCubit extends Cubit<ShopStates> {
   ShopCubit() :super(ShopInitialState());
 
   static ShopCubit get(context) => BlocProvider.of(context);
-  bool theme = false;
+  bool Darktheme = false;
   int current_index = 0;
 
 
@@ -46,10 +47,21 @@ class ShopCubit extends Cubit<ShopStates> {
 
   ];
 
+  void SaveTheme(bool theme) {
+    Darktheme = theme;
+
+    emit(ShopChangeBottomNavState());
+  }
 
   void changeBottomNavbar(int index) {
     current_index = index;
 
+    emit(ShopChangeBottomNavState());
+  }
+
+  void changeTheme() {
+    Darktheme = Darktheme == true ? false : true;
+    update_theme_app(theme: Darktheme);
     emit(ShopChangeBottomNavState());
   }
 

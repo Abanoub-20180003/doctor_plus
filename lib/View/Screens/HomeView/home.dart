@@ -82,7 +82,6 @@ class Home extends StatelessWidget {
       //   ],
       // ),
       body:   Container(
-      color: Colors.white,
       child: Center(
 
         child: Column(
@@ -96,7 +95,7 @@ class Home extends StatelessWidget {
             Text(
               //local storage
               //_boxLogin.get("userName"),
-              "${doctor_con.email}",
+              "${doctor_profile.name}",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
 
             ),
