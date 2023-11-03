@@ -1,10 +1,16 @@
 
+import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
+import 'package:awesome_bottom_bar/widgets/inspired/inspired.dart';
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:doctor_plus/View/Layout/colors.dart';
 import 'package:doctor_plus/View/Layout/components/constants.dart';
 import 'package:doctor_plus/View/Screens/LoginView/login.dart';
+import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
+import 'package:floating_navbar/floating_navbar.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_floating_bottom_bar/flutter_floating_bottom_bar.dart';
 
 
 import '../Loading_Screen/loading_screen.dart';
@@ -17,9 +23,32 @@ class ShopLayout extends StatelessWidget {
 
 
 
+
+
   @override
   Widget build(BuildContext context) {
-
+    const List<TabItem> items = [
+      TabItem(
+        icon: Icons.home,
+         title: 'Home',
+      ),
+      TabItem(
+        icon: Icons.search_sharp,
+        title: 'Shop',
+      ),
+      TabItem(
+        icon: Icons.favorite_border,
+        title: 'Wishlist',
+      ),
+      TabItem(
+        icon: Icons.shopping_cart_outlined,
+        title: 'Cart',
+      ),
+      TabItem(
+        icon: Icons.account_box,
+        title: 'profile',
+      ),
+    ];
     return BlocConsumer<ShopCubit,ShopStates>(
       listener:(context,state){
         // if(state is ShopSuccessGoToMarketState)
@@ -82,12 +111,90 @@ class ShopLayout extends StatelessWidget {
                 )
               ],
             ),
+
             body:shopCubit.Screens[shopCubit.current_index],
 
 
 
 
+
+            //
+            // bottomNavigationBar: FloatingNavbar(
+            //     iconSize: 20,
+            //     backgroundColor: defaultColor,
+            //     selectedBackgroundColor: secondColor,
+            //     selectedItemColor: thirdColor,
+            //     borderRadius: 15,
+            //     onTap: (index){
+            //       shopCubit.changeBottomNavbar(index);
+            //     },
+            //     currentIndex: shopCubit.current_index,
+            //     items: [
+            //      // FloatingNavbarItem(icon: Icons.home, title: 'Home'),
+            //       FloatingNavbarItem(icon:Icons.home ,title: 'Home' ),
+            //       FloatingNavbarItem(icon:Icons.medical_information,title: 'Drug' ),
+            //       FloatingNavbarItem(icon:Icons.analytics_outlined,title: 'Reports' ),
+            //       FloatingNavbarItem(icon:Icons.settings,title: 'You' ),
+            //     ],
+            //   ),
+
+
+
+            // BottomBarInspiredInside(
+            //   items: items,
+            //   backgroundColor: defaultColor,
+            //   color: secondColor,
+            //   colorSelected: Colors.white,
+            //   indexSelected: shopCubit.current_index,
+            //   onTap: (int index) => setState(() {
+            //     visit = index;
+            //   }),
+            //   animated: false,
+            //   chipStyle:const ChipStyle(isHexagon: true, convexBridge: true),
+            //   itemStyle: ItemStyle.hexagon,
+            // ),
+
+             // bottomNavigationBar:Stack(
+             //   children: [
+             //
+             //     Container(
+             //       color: Colors.transparent,
+             //       padding:const EdgeInsets.only(bottom: 10, right: 32, left: 32),
+             //       child:
+             //       BottomBarFloating(
+             //         paddingVertical: 15,
+             //         borderRadius: BorderRadius.circular(20),
+             //         items: items,
+             //         backgroundColor: defaultColor,
+             //         color: secondColor,
+             //         colorSelected: Colors.white,
+             //         indexSelected: shopCubit.current_index,
+             //         onTap: (index){
+             //           shopCubit.changeBottomNavbar(index);
+             //         },
+             //       ),),
+             //   ],
+             // )
+            // BottomBarInspiredOutside(
+            //   items: items,
+            //   backgroundColor: defaultColor,
+            //   color: secondColor,
+            //   colorSelected: Colors.white,
+            //   indexSelected: shopCubit.current_index,
+            //   onTap: (index){
+            //     shopCubit.changeBottomNavbar(index);
+            //   },
+            //   top: -28,
+            //   animated: false,
+            //   itemStyle: ItemStyle.hexagon,
+            //   chipStyle:const ChipStyle(notchSmoothness: NotchSmoothness.verySmoothEdge),
+            // ),
+
+
+
+
             bottomNavigationBar: BottomNavigationBar(
+
               fixedColor:secondColor,
               currentIndex: shopCubit.current_index,
               onTap: (index){
@@ -101,7 +208,7 @@ class ShopLayout extends StatelessWidget {
                 BottomNavigationBarItem(icon:Icon(Icons.settings),label: 'You' ),
               ],
             ),
-            //
+
 
         ),
           fallback: (context)=> Loading_screen());

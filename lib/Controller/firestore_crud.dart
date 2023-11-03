@@ -62,15 +62,30 @@ class firestroeCRUD {
         .catchError((error) => print("Failed to update the patinet: $error"));
   }
 
-  List<Patient> getPatients() {
+  Future<List<Drug>> getDrugs() async{
+    List<Drug> Drugs = [];
+    await dbConstants.drugsRef.get().then((value) => {
+      value.docs.forEach((element) {
+        Drugs.add(_mapDrugFromDoc(element));
+        element.data();
+      })
+
+    });
+    return Drugs;
+  }
+
+
+  Future<List<Patient>> getPatients() async{
     List<Patient> patinets = [];
-    dbConstants.patientsRef.get().then((value) => {
+    await dbConstants.patientsRef.get().then((value) => {
           value.docs.forEach((element) {
             patinets.add(_mapPatinetFromDoc(element));
             element.data();
           })
+
         });
     return patinets;
+
   }
 
 
@@ -95,17 +110,6 @@ class firestroeCRUD {
   }
 
 
-  Future<List<Drug>> getDrugs() async{
-    List<Drug> Drugs = [];
-    await dbConstants.drugsRef.get().then((value) => {
-      value.docs.forEach((element) {
-        Drugs.add(_mapDrugFromDoc(element));
-        element.data();
-      })
-
-    });
-    return Drugs;
-  }
 
 
 
@@ -121,27 +125,17 @@ class firestroeCRUD {
     }
   }
 
-
-
-
-
-
-
-
-
-
   Patient _mapPatinetFromDoc(DocumentSnapshot doc) {
     Patient p = Patient();
     p.docId = doc.id.toString();
-    p.no = doc['no'];
-    p.rank = doc['rank'];
+    p.no = doc['no'].toString();
+    p.rank = doc['rank'].toString();
     p.name = doc['name'];
-    p.birthOfDate = doc['birthOfDate'];
-    p.maritalStatus = doc['maritalStatus'];
-    // gender
-    p.gander = doc['gander'];
-    p.occupation = doc['occupation'];
-    p.specialHabit = doc['specialHabit'];
+    p.birthOfDate = doc['birthOfDate'].toString();
+    p.maritalStatus = doc['maritalStatus'].toString();
+    p.gander = doc['gander'].toString();
+    p.occupation = doc['occupation'].toString();
+    p.specialHabit = doc['specialHabit'].toString();
     return p;
   }
 
