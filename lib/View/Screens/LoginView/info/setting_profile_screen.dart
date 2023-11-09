@@ -76,8 +76,20 @@ class setting_profile_screen extends StatelessWidget {
                   child: Form(
                     key: formKey,
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
+                        Container(
+                          padding: EdgeInsets.all(2), // Adjust the padding to control the border width
+                          decoration: BoxDecoration(
+                            color: Colors.white, // Border color
+                            shape: BoxShape.circle, // Circular shape
+                          ),
+                          child: CircleAvatar(
+                            radius: 65,
+                            backgroundColor: thirdColor,
+                            backgroundImage: AssetImage('Assets/images/${doctor_profile.image}'),
+                          ),
+                        ),
                          // SizedBox(height: 15),
                          // SizedBox(height: 15),
                         //  Text(
@@ -124,7 +136,7 @@ class setting_profile_screen extends StatelessWidget {
                         //
                         //   ),
                         // ),
-                        SizedBox(height: 25),
+                        SizedBox(height: 5),
                         // Padding(
                         //   padding: const EdgeInsets.symmetric(vertical: 3.0),
                         //   child: Center(child:  CircleAvatar(

@@ -52,8 +52,10 @@ class ShopLayout extends StatelessWidget {
           condition: true,
           builder: (context)=>Scaffold(
             appBar: AppBar(
-              title: const Text("DoctorP+" , style: TextStyle(color: Colors.white),),
+              title: Image(image: AssetImage('Assets/images/dark.png'),width: 50,height: 50,),
+              //const Text("DoctorP+" , style: TextStyle(color: Colors.white),),
               actions: [
+
                 // log out button
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -81,7 +83,19 @@ class ShopLayout extends StatelessWidget {
                       icon: const Icon(Icons.logout_rounded),
                     ),
                   ),
-                )
+                ),
+                // Container(
+                //   padding: EdgeInsets.all(2), // Adjust the padding to control the border width
+                //   decoration: BoxDecoration(
+                //     color: Colors.white, // Border color
+                //     shape: BoxShape.circle, // Circular shape
+                //   ),
+                //   child: CircleAvatar(
+                //     radius: 35,
+                //     backgroundColor: thirdColor,
+                //     backgroundImage: AssetImage('Assets/images/${doctor_profile.image}'),
+                //   ),
+                // ),
               ],
             ),
 
@@ -178,7 +192,7 @@ class ShopLayout extends StatelessWidget {
                 BottomNavigationBarItem(icon:Icon(Icons.home ,),label: 'Home' ),
                 BottomNavigationBarItem(icon:Icon(Icons.medical_information),label: 'Drug' ),
                 BottomNavigationBarItem(icon:Icon(Icons.analytics_outlined),label: 'Reports' ),
-                BottomNavigationBarItem(icon:Icon(Icons.settings),label: 'You' ),
+                BottomNavigationBarItem(icon:Icon(Icons.settings),label: 'Profile' ),
               ],
             ),
 

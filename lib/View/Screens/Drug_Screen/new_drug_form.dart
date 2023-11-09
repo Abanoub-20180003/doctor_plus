@@ -23,7 +23,7 @@ class newDrugForm extends StatefulWidget {
 
 class _newPatientForm extends State<newDrugForm> {
   int _activeStepIndex = 0;
-
+  var formKey = GlobalKey<FormState>();
   // from fildes
   // General info
   TextEditingController No = TextEditingController();
@@ -77,37 +77,58 @@ class _newPatientForm extends State<newDrugForm> {
           content: Container(
             child: Column(
               children: [
-                TextField(
-                  // No
-                  controller: No,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Name',
-                  ),
-                ),
-                const SizedBox(
+
+                InputField (
+                    Controller: No,
+                    type: TextInputType.name,
+                    text: 'Name',
+                    Icon: Icon(Icons.person),
+                    validate:(value)
+                  {
+                    if(value== null || value == "")
+                    {
+                      return "Name is required";
+                    }
+                    return null;
+                  },
+                    ),
+
+                 SizedBox(
                   height: 8,
                 ),
-                TextField(
-                  // Rank
-                  controller: Rank,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Company Name',
-                  ),
+                InputField (
+                  Controller: Rank,
+                  type: TextInputType.name,
+                  text: 'Company Name',
+                  Icon: Icon(Icons.home),
+                  validate:(value)
+                  {
+                    if(value== null || value == "")
+                    {
+                      return "Company Name is required";
+                    }
+                    return null;
+                  },
                 ),
-                const SizedBox(
+                SizedBox(
                   height: 8,
                 ),
-                TextField(
-                  // Name
-                  controller: name,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                    labelText: 'Description',
-                  ),
+                InputField (
+                  Controller: name,
+                  type: TextInputType.name,
+                  text: 'Description',
+                  Icon: Icon(Icons.description),
+                  validate:(value)
+                  {
+                    if(value== null || value == "")
+                    {
+                      return "Description is required";
+                    }
+                    return null;
+                  },
                 ),
-                const SizedBox(
+
+                 SizedBox(
                   height: 8,
                 ),
 
@@ -145,7 +166,7 @@ class _newPatientForm extends State<newDrugForm> {
   void initState() {
     super.initState();
   }
-
+  Drug p = new Drug();
   // function to drow drag table
   // Input Form - Drag Table
   List<Widget> createMedicalHistoryTable() {
@@ -230,7 +251,7 @@ class _newPatientForm extends State<newDrugForm> {
 
     },
     builder: (context, state) {
-    return Scaffold(
+         return Scaffold(
     appBar: AppBar(
     title: const Text(
     'Add New Medicine',
@@ -243,26 +264,30 @@ class _newPatientForm extends State<newDrugForm> {
     backgroundColor: defaultColor,
     foregroundColor: Colors.white,
     ),
-    body: Stepper(
+    body:Form(
+           key: formKey,
+    child :Stepper(
     type: StepperType.vertical,
     currentStep: _activeStepIndex,
     steps: stepList(),
     onStepContinue: () {
     if (_activeStepIndex < (stepList().length - 1)) {
-    setState(() {
-    _activeStepIndex += 1;
-    });
+      if(formKey.currentState!.validate()) {
+
+        p.name = No.text;
+        p.com_name = Rank.text;
+        p.description = name.text;
+        setState(() {
+          _activeStepIndex += 1;
+        });
+
+      }
+
     } else {
     // print summary of the inpout values
     // store data in patient object
-    Drug p = new Drug();
-    p.name = No.text;
-    p.com_name = Rank.text;
-    p.description = name.text;
+      DrugCubit.get(context).Add_Drug(drug: p);
 
-
-    // add to firestore
-    DrugCubit.get(context).Add_Drug(drug: p);
     }
     },
     onStepCancel: () {
@@ -306,7 +331,7 @@ class _newPatientForm extends State<newDrugForm> {
     //       ),
     //     );
     // },
-    ),
+    ),)
     );
     }));
   }

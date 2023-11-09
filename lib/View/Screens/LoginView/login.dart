@@ -141,7 +141,7 @@ class _LoginState extends State<Login> {
                             _controllerEmail.text, _controllerPassword.text);
                         if (loginResult != null) {
 
-                          print("${loginResult.user!.tenantId.toString()}");
+                          print("${loginResult.user!.uid.toString()}");
                           print("===============ngma==============================");
                           await db.getDocById(doctorId: loginResult.user!.uid.toString());
                           print("===============ngma==============================");
@@ -149,15 +149,17 @@ class _LoginState extends State<Login> {
 
                           Doctor doctor = Doctor();
                           doctor.id = loginResult.user!.uid;
-                          print(doctor.id);
                           doctor.name = loginResult.user!.displayName;
                           doctor.email = _controllerEmail.text;
                           doctor.password = _controllerPassword.text;
                           doctor_con = doctor;
 
-
+                         doctor_profile.id =  loginResult.user!.uid;
                           final doctorJson = jsonEncode(doctor.toJson());
                           final doctor_data_Json = jsonEncode(doctor_profile.toJson());
+
+                          ChacheHelper.saveData(key: 'Id',
+                            value: loginResult.user!.uid,);
 
                           ChacheHelper.saveData(key: 'profile',
                             value: doctor_data_Json,);
@@ -166,16 +168,7 @@ class _LoginState extends State<Login> {
                             value: doctorJson,)
                               .then((value) =>
                               navigateAndFinsih(context, ShopLayout()));
-                          // print(doctor_con);
-                          // Navigator.pushReplacement(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //     builder: (context) {
-                          //
-                          //       return ShopLayout();
-                          //     },
-                          //   ),
-                          // );
+
                         } else {
                           // print massage to the user to change pass or email
                         }

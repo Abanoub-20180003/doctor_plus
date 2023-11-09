@@ -27,7 +27,7 @@ class DrugCubit extends Cubit<DrugStates> {
   ];
 
   List<Drug> drugs = [];
-
+  List<Drug> search_List_drugs = [];
 
 
 
@@ -74,10 +74,32 @@ class DrugCubit extends Cubit<DrugStates> {
       print(drugs.length);
       print("=============here============================");
 
+      search_List_drugs = drugs;
       emit(DrugLoadingSuccessState());
     }catch (error) {
       print("Failed to add the Medicine: $error");
       emit(DrugLoadingErrorState());
+    }
+
+
+  }
+
+
+  Future<List<Drug>> Get_Drugs_for_add ()async
+  {
+    emit(DrugLoadingGetDataState());
+    try{
+      print("=============here============================");
+      drugs = await db.getDrugs();
+      print(drugs.length);
+      print("=============here============================");
+
+      return  drugs;
+      emit(DrugLoadingSuccessState());
+    }catch (error) {
+      print("Failed to add the Medicine: $error");
+      emit(DrugLoadingErrorState());
+      return[];
     }
 
 
@@ -111,53 +133,55 @@ class DrugCubit extends Cubit<DrugStates> {
 
 
 
-//   void getProduct_Details({
-//   required int id
-// })
-//   {
-//     emit(ShopLoadingGoToMarketState());
-//     DioHelper.getData(url:product_details,token:token).then((value)
-//     {
-//       print(value.data);
-//       Market_Data = market_model.fromJson(value.data);
-//       emit(ShopSuccessGoToMarketState(Market_Data!));
-//     }).catchError((onError)
-//     {
-//       print(onError.toString());
-//       emit(ShopErrorGoToMarketState());
-//     });
-//   }
 
 
-  // void getUserData()
-  // {
-  //
-  //   emit(ShopLoadingGetProfileState());
-  //   DioHelper.getData(url:Profile,token:token).then((value)
-  //   {
-  //     User = UserModel.fromJson(value.data);
-  //     print(User!.data.id);
-  //     emit(ShopSuccessGetProfileState(User!));
-  //   }).catchError((onError)
-  //   {
-  //     print(onError.toString());
-  //     emit(ShopErrorGetProfileState());
-  //   });
-  // }
+  void search_product({
+    required String search_text,
+  }) async{
+
+    emit(ShopLoadingSearchDrugState());
+    try{
+      drugs = await db.getDrugs();
+      if(search_text.length != 0)
+        {
+          print('----------------------------------------------');
+          print(drugs.length);
+          print('----------------------------------------------');
+          drugs = drugs.where((product) =>
+              product.name!.toLowerCase().contains(search_text.toLowerCase())).toList();
+          // search_List.sort((a, b) => a.name!.compareTo(b.name!));
+          print('------------------========================----------------------------');
+          print(drugs);
+          print('------------------===========================----------------------------');
+          emit(ShopSuccessSearchDrugState("hEL"));
+        }
+        else
+          {
+            empty_search_product();
+          }
+    }catch(onError) {
+      print(onError.toString());
+      emit(ShopErrorSearchDrugState(onError.toString()));
+    }
+  }
+
+  void empty_search_product() async{
+    drugs = await db.getDrugs();
+    search_List_drugs = [];
+
+    emit(ShopSuccessemptySearchDrugState());
+  }
 
 
-  // bool isBottomSheetShown = false;
-  // IconData fabIcon = Icons.edit;
-  //
-  // void changeBottomSheetState({
-  //   required bool isShow,
-  //   required IconData icon,
-  // }) {
-  //   isBottomSheetShown = isShow;
-  //   fabIcon = icon;
-  //
-  //   emit(AppChangeBottomSheetState());
-  // }
+
+
+
+
+
+
+
+
+
 
 
 }

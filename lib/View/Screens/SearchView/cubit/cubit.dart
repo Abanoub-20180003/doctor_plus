@@ -50,7 +50,7 @@ bool get_data = false;
 
     emit(ShopLoadingGetPatientsState());
     try{
-      search_List = await db.getPatients();
+      search_List = await db.getAllPatientsWithDrugs();
       print(search_List.toString());
       print('----------------------------------------------');
       print(search_List.length);
@@ -69,7 +69,7 @@ bool get_data = false;
 
     emit(ShopLoadingSearchProductState());
     try{
-      search_List = await db.getPatients();
+      search_List = await db.getAllPatientsWithDrugs();
       print('----------------------------------------------');
       print(search_List.length);
       print('----------------------------------------------');
@@ -87,7 +87,7 @@ bool get_data = false;
   }
 
   void empty_search_product() async{
-    search_List = await db.getPatients();
+    search_List = await db.getAllPatientsWithDrugs();
     print('----------------------------------------------');
     print(search_List.length);
     print('----------------------------------------------');

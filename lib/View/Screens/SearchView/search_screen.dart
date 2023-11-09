@@ -37,81 +37,87 @@ class searchScreen extends StatelessWidget {
                             fontWeight: FontWeight.bold),
                       ),
                     ),
-                    body: Form(
-                      key: formkey,
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                        child: Expanded(
-                          child: Column(children: [
-                            SizedBox(
-                              height: 15,
-                            ),
-                            searchInputField(searchCon, cubit),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            Row(
-                              children: [
-                                Text(
-                                  "Filters",
-                                  style: TextStyle(fontSize: 20),
+                    body: Container(
+                      width: MediaQuery.sizeOf(context).width,
+                      height: MediaQuery.sizeOf(context).height,
+
+                      child: Form(
+                        key: formkey,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                          child: Expanded(
+                            child: Column(children: [
+                              SizedBox(
+                                height: 15,
+                              ),
+                              searchInputField(searchCon, cubit),
+                              if (state is ShopLoadingGetPatientsState || cubit.get_data == false)
+                                LinearProgressIndicator(),
+                              if (state is ShopLoadingSearchProductState &&
+                                  cubit.get_data == true)
+                                LinearProgressIndicator(),
+                              SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  Text(
+                                    "Filters",
+                                    style: TextStyle(fontSize: 20),
+                                  ),
+                                  Spacer(),
+                                  FilterDialogBotton()
+                                ],
+                              ),
+
+                              SizedBox(
+                                height: 10,
+                              ),
+                              if ((state is ShopSuccessSearchProductState &&
+                                      cubit.search_List.length != 0 &&
+                                      cubit.get_data == true) ||
+                                  state is ShopSuccessGetPatientsState ||
+                                  state is ShopSuccessemptySearchProductState)
+                                Expanded(
+                                  child: ListView.separated(
+                                      itemCount: cubit.search_List.length,
+                                      separatorBuilder:
+                                          (BuildContext context, int index) =>
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        Patient data = cubit.search_List[index];
+                                        return Card(
+                                         // color: Colors.w,
+                                          elevation: 0.0,
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                child: cardTitle(data, context),
+                                              ),
+                                              SizedBox(
+                                                height: 5,
+                                              ),
+                                            ],
+                                          ),
+                                        );
+                                      }),
                                 ),
-                                Spacer(),
-                                FilterDialogBotton()
-                              ],
-                            ),
-                            if (state is ShopLoadingGetPatientsState)
-                              LinearProgressIndicator(),
-                            if (state is ShopLoadingSearchProductState &&
-                                cubit.get_data == true)
-                              LinearProgressIndicator(),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            if ((state is ShopSuccessSearchProductState &&
-                                    cubit.search_List.length != 0 &&
-                                    cubit.get_data == true) ||
-                                state is ShopSuccessGetPatientsState ||
-                                state is ShopSuccessemptySearchProductState)
-                              Expanded(
-                                child: ListView.separated(
-                                    itemCount: cubit.search_List.length,
-                                    separatorBuilder:
-                                        (BuildContext context, int index) =>
-                                            SizedBox(
-                                              height: 5,
-                                            ),
-                                    itemBuilder:
-                                        (BuildContext context, int index) {
-                                      Patient data = cubit.search_List[index];
-                                      return Card(
-                                        color: thirdColor,
-                                        elevation: 8.0,
-                                        child: Column(
-                                          children: [
-                                            Container(
-                                              child: cardTitle(data, context),
-                                            ),
-                                            SizedBox(
-                                              height: 10,
-                                            ),
-                                          ],
-                                        ),
-                                      );
-                                    }),
-                              ),
-                            if (state is ShopSuccessSearchProductState &&
-                                cubit.search_List.length == 0 &&
-                                cubit.get_data == true)
-                              Expanded(
-                                child: Center(
-                                    child: Image(
-                                  image: AssetImage('Assets/images/404.gif'),
-                                )),
-                              ),
-                            if (cubit.get_data == false)
-                              LinearProgressIndicator(),
-                          ]),
+                              if (state is ShopSuccessSearchProductState &&
+                                  cubit.search_List.length == 0 &&
+                                  cubit.get_data == true)
+                                Expanded(
+                                  child: Center(
+                                      child: Image(
+                                    image: AssetImage('Assets/images/404.gif'),
+                                  )),
+                                ),
+
+
+                            ]),
+                          ),
                         ),
                       ),
                     ),

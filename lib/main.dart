@@ -9,6 +9,7 @@ import 'package:doctor_plus/View/Layout/components/constants.dart';
 import 'package:doctor_plus/View/Screens/Drug_Screen/cubit/cubit.dart';
 
 import 'package:doctor_plus/View/Screens/LoginView/login.dart';
+import 'package:doctor_plus/View/Screens/Organization_Screen/cubit/cubit.dart';
 import 'package:doctor_plus/View/Screens/Report_Screen/cubit/cubit.dart';
 import 'package:doctor_plus/View/Screens/SearchView/cubit/cubit.dart';
 import 'package:doctor_plus/main_app.dart';
@@ -16,9 +17,11 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:internet_connection_checker/internet_connection_checker.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 import 'View/Layout/Shop_app/cubit/cubit.dart';
 import 'View/Layout/Shop_app/cubit/states.dart';
 import 'View/Layout/Shop_app/share_screen2.dart';
+import 'View/Layout/components/components.dart';
 import 'View/Style/theme_manager.dart';
 import 'firebase_options.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -46,15 +49,24 @@ void main() async {
     }
 
   if (token2 != null) {
-      final doctorMap = jsonDecode(token2);
-      widget = ShopLayout();
-      doctor_con = Doctor.fromJson(doctorMap);
-      String? profile = ChacheHelper.getData(key: 'profile');
-      if(profile != null)
-        {
-          final doctorMap2 = jsonDecode(profile);
-          doctor_profile = Doctor.fromJson(doctorMap2);
-        }
+    final doctorMap = jsonDecode(token2);
+    widget = ShopLayout();
+    // doctor_con = Doctor.fromJson(doctorMap);
+    String? profile = ChacheHelper.getData(key: 'profile');
+    if(profile != null)
+    {
+      final doctorMap2 = jsonDecode(profile);
+      doctor_profile = Doctor.fromJson(doctorMap2);
+    }
+    String? Id = ChacheHelper.getData(key: 'Id');
+    if(Id != null)
+      {
+        print("my id ===============================================");
+        print(Id);
+        print("=========================Ok==============================");
+        doctor_profile.id = Id;
+      }
+
     }
 
 
@@ -92,6 +104,12 @@ class MyApp extends StatelessWidget {
               create: (context) => ReportCubit(),
 
           ),
+          BlocProvider(
+
+            create: (context) => OrganizationCubit(),
+
+          ),
+
 
           BlocProvider(
 
@@ -113,8 +131,17 @@ class MyApp extends StatelessWidget {
                   builder: (BuildContext context, AsyncSnapshot<bool> snapshot) {
                     bool isConnected = snapshot.data!;
                     print(" Look At Connection H a -------------------------------------------------------- : "+isConnected.toString());
-                    return Scaffold(
-                      body: isConnected == true ? start_screem : share_screen2(),
+                    return  Scaffold(
+                        body:
+                        LoaderOverlay(
+                            useDefaultLoading: false,
+                            overlayWidget:  loading(context),
+                            overlayColor: Colors.black26,
+                            overlayOpacity: 0.3,
+
+                            child: isConnected == true ? start_screem : share_screen2(),
+                        ),
+
                     );
                   }
               ));

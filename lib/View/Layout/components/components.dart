@@ -1,11 +1,13 @@
 // ignore_for_file: non_constant_identifier_names
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_plus/View/Layout/colors.dart';
 import 'package:flutter/material.dart';
 
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:drop_down_list/drop_down_list.dart';
 import 'package:drop_down_list/model/selected_list_item.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:toast/toast.dart';
 import 'constants.dart';
 import 'package:bottom_sheet/bottom_sheet.dart';
@@ -259,13 +261,12 @@ Widget box_main_market_brands (text,image,fun,context) =>Container(
 
 Widget box (text,image,fun,context) =>Container(
   decoration: BoxDecoration(
-    color: thirdColor,
+    color: Colors.white,
     borderRadius: BorderRadius.circular(10),
   ),
   child: Padding(
     padding: const EdgeInsets.symmetric(horizontal: 0.0),
-    child:Row(
-      children: [
+    child:
         TextButton(
           onPressed: fun,
           child: Container(
@@ -283,8 +284,6 @@ Widget box (text,image,fun,context) =>Container(
           ),
         ),
 
-      ],
-    ) ,
   ),);
 
 Widget box_with_border (text,image,fun,context) =>Container(
@@ -333,7 +332,7 @@ padding:  EdgeInsets.symmetric(horizontal: 20.0),
 child: Container(
 decoration: BoxDecoration(
 borderRadius: BorderRadius.circular(5),
-// color: thirdColor,
+ color: thirdColor,
 ),
 
 child: Padding(
@@ -341,7 +340,10 @@ padding: const EdgeInsets.symmetric(horizontal: 8.0 , vertical: 25),
 child: Row(
 children: [
 SizedBox(width: 20,),
-CircularProgressIndicator(),
+  LoadingAnimationWidget.inkDrop(
+    color: defaultColor,
+    size: 40,
+  ),
 SizedBox(width: 20,),
 Text("Loading ...",)
 ],
@@ -725,3 +727,16 @@ void showToast2({required String msg,required ToastStatus })=>Toast.show(msg, du
 //   }
 //   return color;
 // }
+
+
+Timestamp? convert_string_to_time(String date)
+{
+
+  if(date.length != 0)
+    {
+      DateTime dateTime = DateTime.parse(date);
+      Timestamp timestamp = Timestamp.fromDate(dateTime);
+      return timestamp;
+    }
+  return null;
+}

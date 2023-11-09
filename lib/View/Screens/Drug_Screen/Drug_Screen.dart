@@ -19,7 +19,7 @@ import 'package:toast/toast.dart';
 
 import '../../Layout/colors.dart';
 import 'cubit/states.dart';
-
+import 'package:doctor_plus/View/Layout/components/components.dart';
 
 List<String> CarsImage = [
   "https://i.pinimg.com/564x/0e/f6/f6/0ef6f6913a32bc22259f8644cac6832b.jpg"
@@ -49,11 +49,12 @@ class drug_screen extends StatelessWidget {
     {"title":"groups","icon":"group.png","fun":(){}},
     // {"title":"info","icon":"info3.png"},
   ];
+  var searchCon = TextEditingController();
   @override
   Widget build(BuildContext context) {
     ToastContext().init(context);
     return BlocProvider (
-        create: (BuildContext context)=> DrugCubit().drugs != null ? DrugCubit() :DrugCubit()..Get_Drugs(),
+        create: (BuildContext context)=> DrugCubit()..Get_Drugs(),
           //   () {
           // if(Brands_car == null)
           //   {
@@ -99,70 +100,77 @@ class drug_screen extends StatelessWidget {
                       vertical: 0.0, horizontal: 0),
                   child: Form(
                     key: formKey,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-
-                        // CircleAvatar(
-                        //   radius: 60,
-                        //   child: Image(image: NetworkImage(url_img_car+'users/images/'+ User!.data.photo),),),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ConditionalBuilder(
-                              condition: state is DrugLoadingSuccessState,
-                              builder: (context) =>
-                                  DrugCubit.get(context).drugs.length != 0 ?  Container(
-                                    width:  MediaQuery.of(context).size.width,
-                                    height: 600,
-                                    child: Padding(
-                                      padding: EdgeInsets.symmetric(horizontal: 15.0,vertical: 20 ),
-                                      child: ListView.separated(
-                                          scrollDirection: Axis.vertical,
-                                          itemBuilder: (context,index)=> Card(
-                                            elevation: 8.0,
-                                            child: Column(
-                                              children: [
-                                                Container(
-                                                  child: DrugcardTitle(DrugCubit.get(context).drugs[index], context),
-                                                ),
-                                                SizedBox(height: 10,),
-                                              ],
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15.0 ,horizontal: 0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                              width: MediaQuery.sizeOf(context).width-30,
+                              child: searchInputField(searchCon, DrugCubits)),
+                          if (state is DrugLoadingGetDataState)
+                            LinearProgressIndicator(),
+                          // CircleAvatar(
+                          //   radius: 60,
+                          //   child: Image(image: NetworkImage(url_img_car+'users/images/'+ User!.data.photo),),),
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              ConditionalBuilder(
+                                condition: state is DrugLoadingSuccessState || state is ShopSuccessSearchDrugState || state is ShopSuccessemptySearchDrugState,
+                                builder: (context) =>
+                                    DrugCubit.get(context).drugs.length != 0 ?  Container(
+                                      width:  MediaQuery.of(context).size.width,
+                                      height: 600,
+                                      child: Padding(
+                                        padding: EdgeInsets.symmetric(horizontal: 15.0,vertical: 20 ),
+                                        child: ListView.separated(
+                                            scrollDirection: Axis.vertical,
+                                            itemBuilder: (context,index)=> Card(
+                                              elevation: 0.0,
+                                              child: Column(
+                                                children: [
+                                                  Container(
+                                                    child: DrugcardTitle(DrugCubit.get(context).drugs[index], context),
+                                                  ),
+                                                  SizedBox(height: 10,),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                          separatorBuilder: (context,index)=> SizedBox(height: 15,),
-                                          itemCount:DrugCubit.get(context).drugs.length),
-                                    ),
-                                  ): Container(
-                                width:  MediaQuery.of(context).size.width,
-
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-
-                                      Center(
-                                        child: Image(
-                                          image: AssetImage('Assets/images/med.png'),
-                                          width: MediaQuery.of(context).size.width,
-                                          height: 400,
-                                        ),
-
+                                            separatorBuilder: (context,index)=> SizedBox(height: 5,),
+                                            itemCount:DrugCubit.get(context).drugs.length),
                                       ),
-                                      Text("Add Some Medinice" , style: TextStyle(color:defaultColor,fontSize: 25),),
+                                    ): Container(
+                                  width:  MediaQuery.of(context).size.width,
 
-                                    ],
-                                  ),
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment: CrossAxisAlignment.center,
+                                      children: [
 
+                                        Center(
+                                          child: Image(
+                                            image: AssetImage('Assets/images/med.png'),
+                                            width: MediaQuery.of(context).size.width,
+                                            height: 400,
+                                          ),
+
+                                        ),
+                                        Text("Not Found Medinice" , style: TextStyle(color:defaultColor,fontSize: 25),),
+
+                                      ],
+                                    ),
+
+                                ),
+                                fallback: (context) =>  Center(child: loading(context)),
                               ),
-                              fallback: (context) =>  Center(child: loading(context)),
-                            ),
-                          ],
-                        ),
+                            ],
+                          ),
 
-                      ],),
+                        ],),
+                    ),
                   ),
                 ),
 
@@ -294,10 +302,10 @@ class drug_screen extends StatelessWidget {
             floatingActionButton: Align(
               alignment: Alignment.bottomRight,
               child: FloatingActionButton(
-                backgroundColor: defaultColor,
+               // backgroundColor: defaultColor,
                   child: Icon(
                       Icons.add,
-                    color: Colors.white,
+                   // color: Colors.white,
                   ),
                   onPressed: () async{
 
@@ -396,6 +404,40 @@ class drug_screen extends StatelessWidget {
           }
       );
   }
+
+
+  Widget searchInputField(TextEditingController searchCon, DrugCubit cubit) {
+    return InputField(
+      Controller: searchCon,
+      onchange: (String text) {
+        print(text.length);
+        if (text != null && text.length != 0) {
+          cubit.search_product(search_text: searchCon.text);
+        } else if (text.length == 0) {
+          cubit.empty_search_product();
+          print('aho');
+        }
+      },
+      // onsumbit: (String text)
+      // {
+      //   // cubit.SearchProduct(text: text);
+      // },
+      type: TextInputType.text,
+      validate: (value) {
+        if (value == null || value == "") {
+          return "Search Value Must Be Not Empty";
+        }
+        return null;
+      },
+      Suffixicon: Icon(Icons.search),
+      functionSuffix: () {
+        // cubit.SearchProduct(text: searchCon.text);
+      },
+      Icon: Icon(Icons.data_usage),
+      text: 'Search',
+    );
+  }
+
 
 }
 

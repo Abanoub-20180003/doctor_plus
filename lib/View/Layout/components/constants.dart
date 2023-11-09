@@ -91,6 +91,8 @@
 import 'dart:convert';
 
 import 'package:doctor_plus/Model/doctor.dart';
+import 'package:doctor_plus/Model/drug.dart';
+import 'package:doctor_plus/Model/organization.dart';
 import 'package:doctor_plus/View/Layout/components/components.dart';
 import 'package:doctor_plus/View/Screens/LoginView/login.dart';
 import 'package:doctor_plus/network/Local/chaced_helper.dart';
@@ -98,7 +100,7 @@ import 'package:doctor_plus/network/Local/chaced_helper.dart';
 
 Doctor  doctor_con = new Doctor();
 Doctor  doctor_profile = new Doctor();
-
+Organization  Organization_details = new Organization();
 void signOut(context)async
 {
   ChacheHelper.RemoveData(key:'token').then((value) => {
@@ -145,8 +147,11 @@ void update_theme_app({
 
 }
 
+List<Drug> drugs_add_patient = [];
+List<Drug> drugs_added_patient = [];
 
 
+List<Organization> organizations_add_patient = [];
 // String email_in = '';
 // int code = 0 ;
 //

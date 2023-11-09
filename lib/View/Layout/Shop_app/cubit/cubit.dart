@@ -53,6 +53,17 @@ class ShopCubit extends Cubit<ShopStates> {
     emit(ShopChangeBottomNavState());
   }
 
+  void Add_Person_Drugs() {
+
+    emit(ShopChangeBottomNavState());
+  }
+
+  void Remove_drug(int index) {
+
+    drugs_added_patient.removeAt(index);
+    emit(ShopChangeBottomNavState());
+  }
+
   void changeBottomNavbar(int index) {
     current_index = index;
 

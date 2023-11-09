@@ -1,23 +1,50 @@
 class Doctor {
-  String? name, email, password, id, organizationId, image;
+  String? name, email, id, organizationId, image;
+  String? password;
 
   Doctor();
 
-  Doctor.data(this.name, this.email, this.password, this.id, this.organizationId , this.image);
+  Doctor.data(
+  {
+    required String id,
+    required String name,
+    required String email,
+    required String image,
+    required String organizationId,
+    required String password,
+}
+      ){
+    this.id=id;
+    this.name = name;
+    this.email = email;
+    this.password = password;
+    this.organizationId = organizationId;
+    this.image= image;
+
+  }
 
   factory Doctor.fromJson(Map<String, dynamic> json) {
-    return Doctor.data(json['name'], json['email'], json['password'], json['id'],
-        json['organizationId'] , json['image']);
+    return Doctor.data(
+      id: '',
+      //json['id'],
+      name: json['name'],
+      email:  json['email'],
+      image: json['image'],
+      organizationId: '',
+      //json['organizationId'],
+      password: '',
+      //json['password'],
+    );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'name': name,
+      'id': id,
+      'name' : name,
       'email': email,
-      'password': password,
-      'id,': id,
       'organizationId': organizationId,
       'image': image,
+      'password': password,
     };
   }
 }

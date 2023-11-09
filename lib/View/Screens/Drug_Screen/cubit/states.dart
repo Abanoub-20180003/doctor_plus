@@ -55,3 +55,21 @@ class DrugErrorAddState extends DrugStates {
   final String msg;
   DrugErrorAddState(this.msg);
 }
+
+
+
+class ShopLoadingSearchDrugState extends DrugStates {}
+
+class ShopSuccessSearchDrugState extends DrugStates {
+  final String msg;
+  ShopSuccessSearchDrugState(this.msg);
+}
+
+class ShopErrorSearchDrugState extends DrugStates {
+  final String error;
+  ShopErrorSearchDrugState(this.error);
+}
+
+
+class ShopSuccessemptySearchDrugState extends DrugStates {}
+

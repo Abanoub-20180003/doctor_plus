@@ -16,19 +16,20 @@ abstract class ThemeManager {
       ) ,
       scaffoldBackgroundColor: ColorManager.primaryColor,
       primaryColor: ColorManager.primaryColor,
-     colorScheme: ColorScheme.dark(primary: ColorManager.white , background:ColorManager.black, ),
+     colorScheme: ColorScheme.dark(primary: ColorManager.white , background:ColorManager.primaryColor, ),
       appBarTheme: AppBarTheme(
         backgroundColor:ColorManager.primaryColor,
         //color: ColorManager.primaryColor,
         titleTextStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 24,color: Colors.white),
         elevation: 0,
-        centerTitle: true,
+       // centerTitle: true,
       ),
     );
   }
 
   static ThemeData getAppLightTheme() {
     return ThemeData(
+      backgroundColor: thirdColor,
       bottomNavigationBarTheme:BottomNavigationBarThemeData(
         backgroundColor: Colors.black,
         unselectedItemColor: defaultColor,
@@ -36,14 +37,14 @@ abstract class ThemeManager {
         unselectedLabelStyle: TextStyle(color: ColorManager.black),
 
       ) ,
-      scaffoldBackgroundColor: ColorManager.white,
+      scaffoldBackgroundColor: thirdColor,
       primaryColor: ColorManager.white,
       colorScheme: ColorScheme.light(primary: ColorManager.black),
       appBarTheme: AppBarTheme(
-        color: defaultColor,
+        color: ColorManager.primaryColor,
         titleTextStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 24 ,color: Colors.white),
         elevation: 0,
-        centerTitle: true,
+       // centerTitle: true,
       ),
     );
   }
