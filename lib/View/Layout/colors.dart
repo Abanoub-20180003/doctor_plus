@@ -5,9 +5,6 @@ import 'package:flutter_hex_color/flutter_hex_color.dart';
 
 
 var defaultColor = ColorManager.primaryColor;
-//HexColor("#2f89b9");
-//Color.fromRGBO(32, 63, 100, 1.0);
-//HexColor('#37474F');
 
 var defaultColor2 = HexColor('#2B3439');
 

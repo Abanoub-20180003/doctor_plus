@@ -4,11 +4,11 @@ import 'package:doctor_plus/View/Layout/Shop_app/cubit/states.dart';
 import 'package:doctor_plus/View/Layout/components/constants.dart';
 import 'package:doctor_plus/View/Screens/Drug_Screen/Drug_Screen.dart';
 import 'package:doctor_plus/View/Screens/LoginView/profile.dart';
+import 'package:doctor_plus/View/Screens/Report_Screen/Report_Screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../Screens/HomeView/home.dart';
-import '../../../Screens/Report_Screen/report_screem.dart';
 
 class ShopCubit extends Cubit<ShopStates> {
   ShopCubit() :super(ShopInitialState());
@@ -26,23 +26,13 @@ class ShopCubit extends Cubit<ShopStates> {
     Icons.settings,
   ];
 
-  //
-  // List<Widget> Marketo_Screens = [
-  //   HomePage(),
-  //   categories_screen(),
-  //   show_car_screen(),
-  //   setting_screen(),
-  //
-  //
-  // ];
-
 
 
 
   List<Widget> Screens = [
     Home(),
     drug_screen(),
-    report_screem(),
+    report_screen(),
     profile(),
 
   ];

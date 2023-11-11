@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:doctor_plus/Model/medical_test_type.dart';
 import 'package:doctor_plus/Model/organization.dart';
 import 'package:doctor_plus/View/Layout/Shop_app/cubit/cubit.dart';
 import 'package:doctor_plus/View/Layout/components/components.dart';
@@ -6,6 +7,7 @@ import 'package:doctor_plus/View/Layout/components/constants.dart';
 import 'package:doctor_plus/View/Screens/Drug_Screen/cubit/cubit.dart';
 import 'package:doctor_plus/View/Screens/Organization_Screen/Org_detail_Screen.dart';
 import 'package:doctor_plus/View/Screens/Organization_Screen/cubit/cubit.dart';
+import 'package:doctor_plus/View/Screens/Report_Screen/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import '../../Model/drug.dart';
 import '../../Model/patient.dart';
@@ -20,7 +22,6 @@ String convert_stamp_to_Date({
   required Timestamp timestamp
 })
 {
-
   return  DateFormat('yyyy-MM-dd : HH:mm').format(timestamp.toDate()).toString();
 }
 
@@ -30,13 +31,6 @@ class cardTitle extends ListTile {
       : super(
             tileColor: ShopCubit.get(context).Darktheme == false ? Colors.white: Colors.black38 ,
             title: Text(_patient.name!),
-            // subtitle: Column(
-            //   crossAxisAlignment: CrossAxisAlignment.start,
-            //   children: <Widget>[
-            //      Text(_patient.no!),
-            //      Text(_patient.gander!)
-            //   ],
-            // ),
             leading: CircleAvatar(
                 backgroundColor: Colors.transparent,
                 child: Image(image: AssetImage('Assets/images/profile.png'),)),
@@ -65,7 +59,7 @@ class DrugcardTitle2 extends ListTile {
     subtitle: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-         Text("Dr . ${_drug.doctor!.name!}"),
+          Text("Dr . ${_drug.doctor!.name!}"),
          Text("From : ${convert_stamp_to_Date(timestamp:_drug!.Start_at!)} "),
         _drug!.end_at != null ? Text("To : ${convert_stamp_to_Date(timestamp:_drug!.end_at!)} ") : Text("Until Now"),
 
@@ -84,16 +78,8 @@ class DrugcardTitle2 extends ListTile {
         color: Colors.redAccent,
       ),
     ): Text(''),
-    // trailing: IconButton(
-    //   onPressed: (){
-    //     DrugCubit.get(context).Delete_Drugs(Id:_drug.Id!);
-    //   },
-    //   icon: Icon(
-    //     Icons.delete_forever,
-    //     size: 30.0,
-    //     color: Colors.redAccent,
-    //   ),
-    // ),
+
+
 
   );
 }
@@ -127,13 +113,36 @@ class DrugcardTitle extends ListTile {
           color: Colors.redAccent,
         ),
       ),
-      // onTap: () {
-      //   // open profile page for more detials
-      //   Navigator.push(
-      //       context,
-      //       MaterialPageRoute(
-      //           builder: (context) => patientProfile(_drug)));
-      // });
+  );
+}
+
+class Test_Type_cardTitle extends ListTile {
+  Test_Type_cardTitle(Medical_Test_type _test_type, BuildContext context)
+      : super(
+    tileColor: ShopCubit.get(context).Darktheme == false ? Colors.white: Colors.black38 ,
+    selectedTileColor :ShopCubit.get(context).Darktheme == false ? Colors.white: Colors.black38 ,
+
+    title: Text(_test_type.name!),
+    subtitle: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        new Text(_test_type.description!),
+      ],
+    ),
+    leading: CircleAvatar(
+        backgroundColor: Colors.transparent,
+        child: Image(image: AssetImage('Assets/images/med.png'),)),
+    dense: false,
+    trailing: IconButton(
+      onPressed: (){
+        ReportCubit.get(context).Delete_Test_Type(Id:_test_type.id!);
+      },
+      icon: Icon(
+        Icons.delete_forever,
+        size: 30.0,
+        color: Colors.redAccent,
+      ),
+    ),
   );
 }
 
@@ -159,7 +168,6 @@ class DrugcardTitle24 extends ListTile {
     trailing: IconButton(
       onPressed: (){
         ShopCubit.get(context).Remove_drug(index);
-        //drugs_added_patient.removeAt(index);
       },
       icon: Icon(
         Icons.delete_forever,
@@ -167,13 +175,7 @@ class DrugcardTitle24 extends ListTile {
         color: Colors.redAccent,
       ),
     ),
-    // onTap: () {
-    //   // open profile page for more detials
-    //   Navigator.push(
-    //       context,
-    //       MaterialPageRoute(
-    //           builder: (context) => patientProfile(_drug)));
-    // });
+
   );
 }
 
@@ -183,34 +185,14 @@ class OrganizationcardTitle extends ListTile {
       : super(
     tileColor: ShopCubit.get(context).Darktheme == false ? Colors.white: Colors.black38 ,
     selectedTileColor :ShopCubit.get(context).Darktheme == false ? Colors.white: Colors.black38 ,
-
     title: Text(_org.name!),
-    subtitle: MaterialButton(
-      onPressed: (){
-        OrganizationCubit.get(context).Get_organizations_with_patients_doctors(_org);
-
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-           Text(_org.location!),
-        ],
-      ),
-    ),
     leading: CircleAvatar(
         backgroundColor: Colors.transparent,
         child: Image(image: AssetImage('Assets/images/hos.png'),)),
     dense: false,
-    trailing: IconButton(
-      icon:Icon(Icons.arrow_forward,
+    trailing:Icon(Icons.arrow_forward,
         size: 24.0,
-        color: Colors.blue,), onPressed: () {
-         OrganizationCubit.get(context).Get_organizations_with_patients_doctors(_org);
-
-
-        },
-
-    ),
+        color: Colors.blue,),
   );
 }
 
@@ -222,33 +204,14 @@ class Organization_Patient_cardTitle extends ListTile {
     selectedTileColor :ShopCubit.get(context).Darktheme == false ? Colors.white: Colors.black38 ,
 
    // title: Text(_patient.name!),
-    subtitle: MaterialButton(
-      onPressed: (){
-       // OrganizationCubit.get(context).Get_organizations_with_patients_doctors(_org);
-
-      },
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: <Widget>[
-          Text(_patient.name!),
-        ],
-      ),
-    ),
+    title:Text(_patient.name),
     leading: CircleAvatar(
         backgroundColor: Colors.transparent,
         child: Image(image: AssetImage('Assets/images/profile.png'),)),
     dense: false,
-    trailing: IconButton(
-      icon:Icon(Icons.arrow_forward,
+    trailing:Icon(Icons.arrow_forward,
         size: 24.0,
-        color: Colors.blue,), onPressed: () {
-     // OrganizationCubit.get(context).Get_organizations_with_patients_doctors(_org);
-
-
-    },
-
-    ),
+        color: Colors.blue,)
   );
 }
 
@@ -277,15 +240,6 @@ class Organization_Doctor_cardTitle extends ListTile {
         backgroundColor: Colors.transparent,
         child: Image(image: AssetImage('Assets/images/doctor.png'),)),
     dense: false,
-    // trailing: IconButton(
-    //   icon:Icon(Icons.arrow_forward,
-    //     size: 24.0,
-    //     color: Colors.blue,), onPressed: () {
-    //   // OrganizationCubit.get(context).Get_organizations_with_patients_doctors(_org);
-    //
-    //
-    // },
-    //
-    // ),
+
   );
 }

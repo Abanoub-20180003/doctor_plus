@@ -152,6 +152,8 @@ List<Drug> drugs_added_patient = [];
 
 
 List<Organization> organizations_add_patient = [];
+ String? org_id = null ;
+
 // String email_in = '';
 // int code = 0 ;
 //

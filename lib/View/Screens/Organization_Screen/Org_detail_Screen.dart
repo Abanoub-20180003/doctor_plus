@@ -7,7 +7,9 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:doctor_plus/View/Layout/components/components.dart';
 import 'package:doctor_plus/View/Screens/Drug_Screen/cubit/cubit.dart';
 import 'package:doctor_plus/View/Screens/Drug_Screen/new_drug_form.dart';
+import 'package:doctor_plus/View/Screens/NewPatientFormView/new_patient_form.dart';
 import 'package:doctor_plus/View/Screens/Organization_Screen/cubit/cubit.dart';
+import 'package:doctor_plus/View/Screens/SearchView/patient_profile_page.dart';
 import 'package:doctor_plus/View/Widgets/patient_card_title.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -15,12 +17,14 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 import 'package:toast/toast.dart';
 
 import '../../Layout/colors.dart';
 import '../../Layout/components/constants.dart';
 import '../../Style/color_manager.dart';
+import 'add_doctor_screen.dart';
 import 'cubit/states.dart';
 import 'package:doctor_plus/View/Layout/components/components.dart';
 
@@ -62,6 +66,23 @@ class Org_detail_Screen extends StatelessWidget {
           //         ToastStatus: ToastColor.SUCCESS);
           //   }
 
+          if (state is DrugProfilePatientSuccessState || state is DrugProfilePatientErrorState )
+          {
+            context.loaderOverlay.hide();
+            if(state is DrugProfilePatientSuccessState )
+            {
+              //print(state.patient_detail!.blood.toString());
+              navigateTo(context, patientProfile(state.patient_detail));
+
+            }
+            else if(state is DrugProfilePatientErrorState)
+            {
+              showToast(msg: state.msg,
+                  ToastStatus: ToastColor.ERROR);
+
+            }
+
+          }
 
           if (state is DrugDeleteSuccessState || state is DrugDeleteErrorState )
           {
@@ -88,7 +109,13 @@ class Org_detail_Screen extends StatelessWidget {
               backgroundColor: defaultColor,
               title: Text('Organization',style: TextStyle(color: Colors.white),),
             ),
-            body:SingleChildScrollView(
+            body:LoaderOverlay(
+                useDefaultLoading: false,
+                overlayWidget:  loading(context),
+                overlayColor: Colors.black26,
+                overlayOpacity: 0.3,
+                child :
+                SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
                       vertical: 0.0, horizontal: 0),
@@ -230,7 +257,10 @@ class Org_detail_Screen extends StatelessWidget {
                         children: [
                           Padding(
                             padding:  EdgeInsets.symmetric(horizontal: 13.0,vertical: 2),
-                            child: MaterialButton(onPressed: (){},child: Row(
+                            child: MaterialButton(onPressed: () async{
+                              organizations_add_patient = await OrganizationCubit.get(context).Get_organizations_to_add();
+                              navigateTo(context, newPatientForm());
+                            },child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
                                 Icon(Icons.add),
@@ -249,7 +279,12 @@ class Org_detail_Screen extends StatelessWidget {
                                   child: Column(
                                     children: [
                                       Container(
-                                        child: Organization_Patient_cardTitle(Organization_details.patients[index], context,Org_detail_Screen()),
+                                        child: MaterialButton(
+                                            onPressed: (){
+                                              context.loaderOverlay.show();
+                                              OrganizationCubit.get(context).Get_person_details_patients_organization(Organization_details.patients[index].id);
+                                            },
+                                            child: Organization_Patient_cardTitle(Organization_details.patients[index], context,Org_detail_Screen())),
                                       ),
                                       SizedBox(height: 10,),
                                     ],
@@ -305,13 +340,17 @@ class Org_detail_Screen extends StatelessWidget {
                             children: [
                               Text("${Organization_details.doctors.length} Membars"),
                               Spacer(),
-                              MaterialButton(onPressed: (){}, child: Row(
+                              doctor_profile.id == Organization_details.Main_Doctor.id ?MaterialButton(onPressed: (){
+                                print(Organization_details.Id);
+                                org_id = Organization_details.Id;
+                                navigateTo(context, add_doctor_screen());
+                              }, child: Row(
                                 children: [
                                   Icon(Icons.add),
                                   SizedBox(width: 5,),
                                   Text('Assign Doctor'),
                                 ],
-                              ),),
+                              ),):Text(''),
                             ],
                           ),
                         ),
@@ -324,8 +363,6 @@ class Org_detail_Screen extends StatelessWidget {
                                 elevation: 0.0,
                                 child: Column(
                                   children: [
-                                    // Text(Organization_details.doc_id.toString()),
-                                    // Text(Organization_details.doctors[index].id),
                                     Container(
                                       child:Organization_Doctor_cardTitle(Organization_details.doctors[index], context,Org_detail_Screen()),
                                     ),
@@ -350,38 +387,8 @@ class Org_detail_Screen extends StatelessWidget {
 
                 ),
 
-            ),
+            )),
 
-
-
-            // floatingActionButton: Align(
-            //   alignment: Alignment.bottomRight,
-            //   child: FloatingActionButton(
-            //    // backgroundColor: defaultColor,
-            //       child: Icon(
-            //           Icons.add,
-            //        // color: Colors.white,
-            //       ),
-            //       onPressed: () async{
-            //
-            //           final newPatient = await Navigator.push(
-            //               context,
-            //               MaterialPageRoute(
-            //                   builder: (context) => newDrugForm()));
-            //
-            //         //
-            //         // showFlexibleBottomSheet(
-            //         //   minHeight: .26,
-            //         //   initHeight: 0.28,
-            //         //   maxHeight: 1,
-            //         //   context: context,
-            //         //   builder: _buildBottomSheet,
-            //         //   anchors: [0, 0.5, 1],
-            //         //   isSafeArea: true,
-            //         // );
-            //       }
-            //
-            //   ),),
 
 
           );

@@ -5,7 +5,7 @@ import 'package:doctor_plus/View/Screens/Drug_Screen/cubit/cubit.dart';
 import 'package:doctor_plus/View/Screens/NewPatientFormView/select_drugs.dart';
 import 'package:doctor_plus/View/Screens/Organization_Screen/cubit/cubit.dart';
 import 'package:doctor_plus/View/Widgets/dropdownListWithCheckbox.dart';
-import 'package:doctor_plus/View/Widgets/drug_table.dart';
+
 import 'package:doctor_plus/View/Widgets/patient_card_title.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -34,6 +34,7 @@ class _newPatientForm extends State<newPatientForm> {
   TextEditingController name = TextEditingController();
   TextEditingController birth_of_date = TextEditingController();
   TextEditingController marital_status = TextEditingController();
+  TextEditingController blood_group = TextEditingController();
   var _gender = 'male'; // gender
   TextEditingController occupation = TextEditingController();
   TextEditingController special_habit = TextEditingController();
@@ -58,28 +59,26 @@ class _newPatientForm extends State<newPatientForm> {
   TextEditingController historyOfIllnessTextController =
       TextEditingController();
   String? selectedGYN_OB_History;
-  List<String> _GYN_OB_items = [
-    'Menarche',
-    'Menopause',
-    'Post-Partum',
-    'Lactating (Yas/No)',
-    'Regular (Duration / Cycle)',
-    'Pregnant (LMP / / )',
-    'Irregular',
-    'Amenorrhea (1ry - 2ry)',
-    'Contraceptive/Hormonal TT',
-    'Gyn/Obs Surgeries'
+
+
+  List Matrial_Status = [
+    {'label': 'Single', 'value': 'Single'},
+    {'label': 'Married', 'value': 'Married'},
+    {'label': 'Other', 'value': 'Other'},
   ];
 
-  List seats = [
-    {'label': '2', 'value': '2'},
-    {'label': '5', 'value': '5'}, // label is required and unique
-    {'label': '7', 'value': '7'},
-    {'label': '9', 'value': '9'},
-    {'label': 'Others', 'value': 'Others'},
+  List Blood_Group = [
+    {'label': 'A+', 'value': 'A+'},
+    {'label': 'B+', 'value': 'B+'}, // label is required and unique
+    {'label': 'O+', 'value': 'O+'},
+    {'label': 'A-', 'value': 'A-'},
+    {'label': 'B-', 'value': 'B-'},
+    {'label': 'O-', 'value': 'O-'}, // label is required and unique
+    {'label': 'AB', 'value': 'AB'},
   ];
   // - Medical History
   List columnHeaders = ['YES', 'NO'];
+
   List rowHeaders = [
     'Diabetes',
     'DM',
@@ -100,13 +99,7 @@ class _newPatientForm extends State<newPatientForm> {
     'Other'
   ];
 
-  Map selectedMedicalHistory = new Map();
-  // - Past Surgical History
-  // - Family Medical History
-  // - Immunization
 
-  // Drug History
-  // Current Drug
 
 
   @override
@@ -115,55 +108,6 @@ class _newPatientForm extends State<newPatientForm> {
     drugs_added_patient = [];
   }
 
-  // function to drow drag table
-  // Input Form - Drag Table
-  List<Widget> createMedicalHistoryTable() {
-    List<Widget> allRows = []; //For Saving all Created Rows
-
-    for (int i = 0; i < rowHeaders.length; i++) {
-      List<Widget> singleRow = []; //For creating a single row
-      for (int j = 0; j < columnHeaders.length; j++) {
-        singleRow.add(Container(
-            alignment: FractionalOffset.center,
-            //width: 120.0,
-            padding: const EdgeInsets.only(
-                //top: 6.0, bottom: 6.0,
-                right: 3.0,
-                left: 3.0),
-            child: Radio(
-              value: j, //Index of created Radio Button
-              groupValue: selectedMedicalHistory[rowHeaders[i]] !=
-                      null //If groupValue is equal to value, the radioButton will be selected
-                  ? selectedMedicalHistory[rowHeaders[i]]
-                  : "",
-              onChanged: (value) {
-                this.setState(() {
-                  selectedMedicalHistory[rowHeaders[i]] =
-                      value; //Adding selected rowName with its Index in a Map tagged "selected"
-                  print("${rowHeaders[i]} ==> $value");
-                });
-              },
-            )));
-      }
-      //Adding single Row to allRows widget
-      allRows.add(new Container(
-          child: new Row(
-        children: [
-          new Container(
-            alignment: FractionalOffset.centerLeft,
-            width: 140.0,
-            padding: const EdgeInsets.only(
-                //top: 6.0, bottom: 6.0,
-                right: 3.0,
-                left: 10.0),
-            child:
-                Text(rowHeaders[i], style: TextStyle(color: Colors.grey[800])),
-          )
-        ]..addAll(singleRow), //Add single row here
-      )));
-    }
-    return allRows; //Return all single rows
-  }
 
   @override
 Widget build(BuildContext context)  {
@@ -200,6 +144,16 @@ Widget build(BuildContext context)  {
                     ).show(context);
                     return null;
                   }
+
+                  if(blood_group.text == null || blood_group.text == '')
+                  {
+                    MotionToast.error(
+                      title:  Text("Blood Group Required"),
+                      description:  Text(""),
+                    ).show(context);
+                    return null;
+                  }
+
 
 
                   if(birth_of_date.text == null || birth_of_date.text == '')
@@ -270,9 +224,18 @@ Widget build(BuildContext context)  {
               p.name = name.text;
               p.birthOfDate = birth_of_date.text;
               p.maritalStatus = marital_status.text;
+              p.blood = blood_group.text;
               p.gander = _gender;
               p.occupation = occupation.text;
               p.specialHabit = special_habit.text;
+              p.organizationId = org_id.text;
+              p.address = address.text;
+              p.cellPhone = cell_phone.text;
+              p.telHome = tel_home.text;
+              p.drugs = drugs_added_patient;
+              drugs_added_patient = [];
+              p.doc_added_Id = doctor_profile.id;
+              p.docId = doctor_profile.id;
 
               // add to firestore
               firestroeCRUD db = firestroeCRUD();
@@ -377,7 +340,7 @@ Widget build(BuildContext context)  {
                 height: 8,
               ),
               CustomSearchableDropDown(
-                items: seats,
+                items: Matrial_Status,
                 label: 'Marital Status',
                 showLabelInMenu: false,
                 decoration: BoxDecoration(
@@ -392,7 +355,7 @@ Widget build(BuildContext context)  {
                   child: Icon(Icons.man),
                 ) ,
 
-                dropDownMenuItems: seats.map((item) {
+                dropDownMenuItems: Matrial_Status.map((item) {
                   return item['label'];
                 })?.toList() ??
                     [],
@@ -401,6 +364,37 @@ Widget build(BuildContext context)  {
                   {
                     print(value['value']);
                     marital_status.text = value['value'];
+                  }
+                },
+              ),
+              const SizedBox(
+                height: 8,
+              ),
+              CustomSearchableDropDown(
+                items: Blood_Group,
+                label: 'Blood Group',
+                showLabelInMenu: false,
+                decoration: BoxDecoration(
+                  border: Border.all(
+                    color: defaultColor,
+
+                  ),
+                  borderRadius: BorderRadius.circular(4),
+                ),
+                prefixIcon:  Padding(
+                  padding: const EdgeInsets.fromLTRB(0,0, 5.0,0),
+                  child: Icon(Icons.bloodtype),
+                ) ,
+
+                dropDownMenuItems: Blood_Group.map((item) {
+                  return item['label'];
+                })?.toList() ??
+                    [],
+                onChanged: (value){
+                  if(value!=null)
+                  {
+                    print(value['value']);
+                    blood_group.text = value['value'];
                   }
                 },
               ),

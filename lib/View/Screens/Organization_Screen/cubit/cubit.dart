@@ -3,6 +3,7 @@
 import 'package:doctor_plus/Controller/firestore_crud.dart';
 import 'package:doctor_plus/Model/drug.dart';
 import 'package:doctor_plus/Model/organization.dart';
+import 'package:doctor_plus/Model/patient.dart';
 import 'package:doctor_plus/View/Layout/Shop_app/cubit/states.dart';
 import 'package:doctor_plus/View/Screens/Drug_Screen/Drug_Screen.dart';
 
@@ -11,6 +12,7 @@ import 'package:doctor_plus/View/Screens/Organization_Screen/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../Model/doctor.dart';
 import '../../../Layout/components/constants.dart';
 import '../../../Screens/HomeView/home.dart';
 
@@ -19,50 +21,14 @@ class OrganizationCubit extends Cubit<OrgStates> {
 
   static OrganizationCubit get(context) => BlocProvider.of(context);
 
-  bool theme = false;
   int current_index = 0;
   firestroeCRUD db = firestroeCRUD();
-  final iconList = <IconData>[
-    Icons.group,
-    Icons.shopping_bag_outlined,
-    Icons.car_rental,
-    Icons.settings,
-  ];
 
   List<Organization> organizations = [];
-  List<Organization> search_List_drugs = [];
-
+  String? organization_id;
   Organization organization_detail = Organization();
 
-  List<Widget> Screens = [
-    Home(),
-    profile(),
-    drug_screen(),
-    profile(),
 
-  ];
-
-  // void changeMarketoBottomNavbar(int index) {
-  //   marketo_current_index = index;
-  //
-  //   emit(ShopChangeBottomNavState());
-  // }
-
-
-
-  // void get_payment_methods()
-  // {
-  //   emit(ShopLoadingGetPaymentsState());
-  //   DioHelper.getData(url:payments_url,token:token).then((value)
-  //   {
-  //     payments = get_payments_model.fromJson(value.data);
-  //     emit(ShopSuccessGetPaymentsState(payments!));
-  //   }).catchError((onError)
-  //   {
-  //     print(onError.toString());
-  //     emit(ShopErrorGetPaymentsState());
-  //   });
-  // }
 
 
   void Get_organizations ()async
@@ -85,7 +51,6 @@ class OrganizationCubit extends Cubit<OrgStates> {
 
 
   }
-
 
   Future<List<Organization>> Get_organizations_to_add ()async
   {
@@ -111,7 +76,6 @@ class OrganizationCubit extends Cubit<OrgStates> {
   }
 
 
-
   void Get_organizations_with_patients_doctors(Organization org)async
   {
     emit(OrgLoadingGetDataState());
@@ -134,81 +98,86 @@ class OrganizationCubit extends Cubit<OrgStates> {
 
   }
 
+  void Get_person_details_patients_organization(String patient_id)async
+  {
+    emit(DrugLoadingProfilePatientDataState());
+    try{
+      print("=============here============================");
+      Patient? patient = await db.getPatient_byId_WithDrugs(patient_id);
+     // print(patient!.drugs.toString());
 
-  void Delete_Drugs ({
-    required String Id
+
+      emit(DrugProfilePatientSuccessState(patient));
+    }catch (error) {
+      print("Failed to Fetch Organization Data: $error");
+      emit(DrugProfilePatientErrorState("Failed to Fetch Organization Data"));
+    }
+
+
+  }
+
+
+  Future<Doctor?> Get_Doctor_and_check({
+    required String email,
+    required String Org_id
 })async
   {
-    emit(DrugLoadingDeleteDataState());
+    try{
+      emit(GetDoctorLoadingDataState());
+      Doctor? doc = await db.getDoc_By_Column_email(Doctor_email: email);
+      bool? unique = false;
+      if(doc?.email != null)
+        {
+          unique = await db.Check_if_doctor_not_on_organization(Org_id,doc!.id!);
+          print(unique);
+          unique == true ? emit(GetDoctorSuccessDataState(doc,true,true,"Get Doctor Success")) : emit(GetDoctorSuccessDataState(Doctor(),false,true," Doctor Already Assigned"));
+          return doc;
+        }
+      else
+        {
+          emit(GetDoctorSuccessDataState(null,false,false,"Can't Find Doctor Success"));
+          return null;
+        }
 
-    bool ok =   await db.deleteDrug(Id);
-    ok == true ? emit(DrugDeleteSuccessState("Medicine Deleted Successfully")): emit(DrugDeleteErrorState("Some Thing Error"));
-    Get_organizations();
+
+    }catch (error) {
+      print("Failed to Fetch Organization Data: $error");
+      emit(GetDoctorErrorDataState("Failed to Fetch Organization Data"));
+    }
+
+
 
   }
 
-
-
-  void Add_Drug({
-    required Drug drug
-})
+  void Assign_Doctor_To_Organization({
+    required String doc_id,
+    required String Org_id
+  })async
   {
-    emit(DrugLoadingAddDataState());
-    db.addDrug(drug).then((value)
+    try{
+      emit(AssignDoctorLoadingDataState());
+      bool assigned = await db.Assign_Doctor_to_org(Org_id,doc_id);
+
+     emit(AssignDoctorSuccessDataState(assigned));
+    }catch (error) {
+      print("Failed to Fetch Organization Data: $error");
+      emit(AssignDoctorErrorDataState("Failed to Fetch Organization Data"));
+    }
+
+
+
+  }
+
+  void Add_New_Organization({
+    required Organization org
+  })
+  {
+    emit(OrganizationLoadingAddDataState());
+    db.add_new_organization(org).then((value)
     {
-      value == true ?  emit(DrugSuccessAddState("Medicine Added Successfully")) :  emit(DrugErrorAddState("Medicine not Added some Thing Wrong"));
+      value == true ?  emit(OrganizationSuccessAddState("Organization Created Successfully")) :  emit(OrganizationErrorAddState("Organization not Created some Thing Wrong"));
     });
   }
-
-
-
-
-  //
-  // void search_product({
-  //   required String search_text,
-  // }) async{
-  //
-  //   emit(ShopLoadingSearchDrugState());
-  //   try{
-  //     drugs = await db.getDrugs();
-  //     if(search_text.length != 0)
-  //       {
-  //         print('----------------------------------------------');
-  //         print(drugs.length);
-  //         print('----------------------------------------------');
-  //         drugs = drugs.where((product) =>
-  //             product.name!.toLowerCase().contains(search_text.toLowerCase())).toList();
-  //         // search_List.sort((a, b) => a.name!.compareTo(b.name!));
-  //         print('------------------========================----------------------------');
-  //         print(drugs);
-  //         print('------------------===========================----------------------------');
-  //         emit(ShopSuccessSearchDrugState("hEL"));
-  //       }
-  //       else
-  //         {
-  //           empty_search_product();
-  //         }
-  //   }catch(onError) {
-  //     print(onError.toString());
-  //     emit(ShopErrorSearchDrugState(onError.toString()));
-  //   }
-  // }
-  //
-  // void empty_search_product() async{
-  //   drugs = await db.getDrugs();
-  //   search_List_drugs = [];
-  //
-  //   emit(ShopSuccessemptySearchDrugState());
-  // }
-
-
-
-
-
-
-
-
-
 
 
 

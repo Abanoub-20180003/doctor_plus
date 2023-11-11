@@ -1,4 +1,5 @@
 import 'package:doctor_plus/Model/drug.dart';
+import 'package:doctor_plus/Model/medical_test_type.dart';
 import 'package:doctor_plus/View/Layout/Shop_app/ShopLayout.dart';
 import 'package:doctor_plus/View/Layout/colors.dart';
 import 'package:doctor_plus/View/Layout/components/components.dart';
@@ -27,34 +28,13 @@ class _newPatientForm extends State<new_report_form> {
 
   // from fildes
   // General info
-  TextEditingController No = TextEditingController();
-  TextEditingController Rank = TextEditingController();
   TextEditingController name = TextEditingController();
-  TextEditingController birth_of_date = TextEditingController();
-  TextEditingController marital_status = TextEditingController();
-  var _gender = 'male'; // gender
+  TextEditingController desciption = TextEditingController();
+  TextEditingController normal_low = TextEditingController();
+  TextEditingController normal_high = TextEditingController();
+  TextEditingController waiting_date = TextEditingController();
 
-  List columnHeaders = ['YES', 'NO'];
-  List rowHeaders = [
-    'Diabetes',
-    'DM',
-    'Complication',
-    'Endo Pancrease',
-    'Pit / Hypothalm',
-    'Thyroid',
-    'Parathroid',
-    'Adrenal',
-    'Genitourinary',
-    'Bone Disease',
-    'Dyslipidemia',
-    'Hypertension',
-    'CVS / CNS',
-    'Liver / GIT',
-    'Cancer',
-    'Psych / eating',
-    'Other'
-  ];
-  Map selectedMedicalHistory = new Map();
+
 
 
   List<Step> stepList() => [
@@ -71,10 +51,10 @@ class _newPatientForm extends State<new_report_form> {
               children: [
                 TextField(
                   // No
-                  controller: No,
+                  controller: name,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Name',
+                    labelText: 'Name of Test',
                   ),
                 ),
                 const SizedBox(
@@ -82,10 +62,10 @@ class _newPatientForm extends State<new_report_form> {
                 ),
                 TextField(
                   // Rank
-                  controller: Rank,
+                  controller: desciption,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Company Name',
+                    labelText: 'Description Test',
                   ),
                 ),
                 const SizedBox(
@@ -93,18 +73,57 @@ class _newPatientForm extends State<new_report_form> {
                 ),
                 TextField(
                   // Name
-                  controller: name,
+                  controller: normal_low,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
-                    labelText: 'Description',
+                    labelText: 'Low Normal Result',
                   ),
                 ),
                 const SizedBox(
                   height: 8,
                 ),
+                TextField(
+                  // Name
+                  controller: normal_high,
+                  decoration: const InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'High Normal Result',
+                  ),
+                ),
+                const SizedBox(
+                  height: 8,
+                ),
+                TextField(
+                  // Birth of date
+                  controller: waiting_date,
+                  decoration:  InputDecoration(
+                    border: OutlineInputBorder(),
+                    labelText: 'Result will Appear at',
+                  ),
+                  readOnly: true,
+                  //set it true, so that user will not able to edit text
+                  onTap: () async {
+                    DateTime? pickedDate = await showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(1950),
+                        //DateTime.now() - not to allow to choose before today.
+                        lastDate: DateTime(2100));
 
-
-
+                    if (pickedDate != null) {
+                      print(
+                          pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
+                      String formattedDate =
+                      DateFormat('yyyy-MM-dd').format(pickedDate);
+                      print(
+                          formattedDate); //formatted date output using intl package =>  2021-03-16
+                      setState(() {
+                        waiting_date.text =
+                            formattedDate; //set output date to TextField value.
+                      });
+                    } else {}
+                  },
+                ),
               ],
             ),
           ),
@@ -125,9 +144,12 @@ class _newPatientForm extends State<new_report_form> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Name: ${No.text}'),
-                Text('Company Name: ${Rank.text}'),
-                Text('Description: ${name.text}'),
+                Text('Name: ${name.text}'),
+                Text('Description: ${desciption.text}'),
+                Text('Low Result: ${normal_low.text}'),
+                Text('High Result: ${normal_high.text}'),
+                Text('Result Appear At : ${waiting_date.text}'),
+
 
               ],
             )))
@@ -139,60 +161,11 @@ class _newPatientForm extends State<new_report_form> {
   }
 
 
-
-  List<Widget> createMedicalHistoryTable() {
-    List<Widget> allRows = []; //For Saving all Created Rows
-
-    for (int i = 0; i < rowHeaders.length; i++) {
-      List<Widget> singleRow = []; //For creating a single row
-      for (int j = 0; j < columnHeaders.length; j++) {
-        singleRow.add(Container(
-            alignment: FractionalOffset.center,
-            //width: 120.0,
-            padding: const EdgeInsets.only(
-                //top: 6.0, bottom: 6.0,
-                right: 3.0,
-                left: 3.0),
-            child: Radio(
-              value: j, //Index of created Radio Button
-              groupValue: selectedMedicalHistory[rowHeaders[i]] !=
-                      null //If groupValue is equal to value, the radioButton will be selected
-                  ? selectedMedicalHistory[rowHeaders[i]]
-                  : "",
-              onChanged: (value) {
-                this.setState(() {
-                  selectedMedicalHistory[rowHeaders[i]] =
-                      value; //Adding selected rowName with its Index in a Map tagged "selected"
-                  print("${rowHeaders[i]} ==> $value");
-                });
-              },
-            )));
-      }
-      //Adding single Row to allRows widget
-      allRows.add(new Container(
-          child: new Row(
-        children: [
-          new Container(
-            alignment: FractionalOffset.centerLeft,
-            width: 140.0,
-            padding: const EdgeInsets.only(
-                //top: 6.0, bottom: 6.0,
-                right: 3.0,
-                left: 10.0),
-            child:
-                Text(rowHeaders[i], style: TextStyle(color: Colors.grey[800])),
-          )
-        ]..addAll(singleRow), //Add single row here
-      )));
-    }
-    return allRows; //Return all single rows
-  }
-
   @override
   Widget build(BuildContext context) {
     ToastContext().init(context);
     return BlocProvider (
-        create: (BuildContext context)=> DrugCubit() ,
+        create: (BuildContext context)=> ReportCubit() ,
         //   () {
         // if(Brands_car == null)
         //   {
@@ -202,13 +175,28 @@ class _newPatientForm extends State<new_report_form> {
         // },
         child:  BlocConsumer<ReportCubit, ReportStates>(
         listener: (context, state) {
+          if (state is Test_Type_AddSuccessState || state is Test_Type_AddErrorState )
+          {
+            if(state is Test_Type_AddSuccessState )
+            {
+              showToast(msg: state.msg,
+                  ToastStatus: ToastColor.SUCCESS);
+              navigateAndFinsih(context,ShopLayout());
+            }
+            else if(state is Test_Type_AddErrorState)
+            {
+              showToast(msg: state.msg,
+                  ToastStatus: ToastColor.ERROR);
+              navigateAndFinsih(context,ShopLayout());
+            }
 
+          }
     },
     builder: (context, state) {
     return Scaffold(
     appBar: AppBar(
     title: const Text(
-    'Add New Medicial Test',
+    'Add New Type Test',
     style: TextStyle(
     fontFamily: 'Bebas',
     letterSpacing: 1,
@@ -228,16 +216,16 @@ class _newPatientForm extends State<new_report_form> {
     _activeStepIndex += 1;
     });
     } else {
-    // print summary of the inpout values
-    // store data in patient object
-    Drug p = new Drug();
-    p.name = No.text;
-    p.com_name = Rank.text;
-    p.description = name.text;
 
+    Medical_Test_type p = new Medical_Test_type.no_data();
+    p.name = name.text;
+    p.description = desciption.text;
+    p.normal_result_low = normal_low.text;
+    p.normal_result_high = normal_high.text;
+    p.waiting_date =convert_string_to_time(waiting_date.text);
 
     // add to firestore
-    DrugCubit.get(context).Add_Drug(drug: p);
+    ReportCubit.get(context).Add_Medical_Tests_Type(test_type: p);
     }
     },
     onStepCancel: () {

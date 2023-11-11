@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:doctor_plus/Model/drug.dart';
+import 'package:doctor_plus/Model/organization.dart';
 import 'package:doctor_plus/Model/patient_drug.dart';
 import 'package:doctor_plus/Model/patient_medical_test.dart';
 import 'package:doctor_plus/Model/patient_visit.dart';
+
+import 'doctor.dart';
 
 class Patient {
   // ganeral info
@@ -17,7 +20,8 @@ class Patient {
       blood,
       docId,
       age,
-      userId;
+      userId,
+      doc_added_Id;
 
   Timestamp?  Start_at, created_at,updated_at;
   // address
@@ -32,4 +36,8 @@ class Patient {
   List<PatientMedicalTest>? medicaltests;
   // patinet drugs
   List<Drug>? drugs;
+
+  Organization? org;
+
+  Doctor? doc;
 }

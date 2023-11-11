@@ -2,9 +2,6 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:doctor_plus/View/Layout/colors.dart';
 import 'package:doctor_plus/View/Layout/components/constants.dart';
-import 'package:doctor_plus/View/Screens/LoginView/login.dart';
-
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -15,8 +15,6 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:open_file/open_file.dart';
 
-import 'package:image/image.dart' as img;
-import 'dart:typed_data';
 
 import '../HomeView/home.dart';
 
@@ -81,7 +79,7 @@ class patientProfile extends StatelessWidget {
                                     SizedBox(height: 5,),
                                     Text("${_patient!.age} Years Old", style: TextStyle( color: thirdColor, fontSize: 15),),
                                     SizedBox(height: 5,),
-                                    Text("${_patient!.gander}",  style: TextStyle( color: thirdColor, fontSize: 12),),
+                                    // Text("Dr . ${_patient!.doc!.name}",  style: TextStyle( color: thirdColor, fontSize: 12),),
                                     SizedBox(height: 5,),
 
                               ],
@@ -951,15 +949,10 @@ Widget _nodeBuilder(context, nodeValue) {
 
 
 
-
-
-
 Future<Uint8List> loadAssetImage(path) async {
   final ByteData data = await rootBundle.load(path);
   return data.buffer.asUint8List();
 }
-
-
 
 
 Future<void> generatePDF(patient,contexts) async {
@@ -1441,24 +1434,3 @@ Future<void> generatePDF(patient,contexts) async {
 
 }
 
-
-// Future<void> generatePDF2() async {
-//   final pdf.Document doc = pdf.Document();
-//
-//   doc.addPage(
-//     pdf.Page(
-//       build: (pdf.Context context) {
-//         return pdf.Center(
-//           child: pdf.Text('Hello, PDF!', style: pdf.TextStyle(fontSize: 30)),
-//         );
-//       },
-//     ),
-//   );
-//
-//   // Save the PDF to a file
-//   final file = File('example.pdf');
-//   await file.writeAsBytes(await doc.save());
-//
-//   // Close the PDF document
-//   doc.save();
-// }

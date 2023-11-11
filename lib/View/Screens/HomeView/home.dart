@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:doctor_plus/View/Screens/LoginView/login.dart';
 import 'package:doctor_plus/View/Screens/NewPatientFormView/new_patient_form.dart';
 import 'package:doctor_plus/Model/patient.dart';
-import 'package:doctor_plus/View/Screens/SearchView/view_search_patinets.dart';
 import 'package:doctor_plus/View/Style/color_manager.dart';
 import 'package:animated_notch_bottom_bar/animated_notch_bottom_bar/animated_notch_bottom_bar.dart';
 
@@ -71,44 +70,11 @@ class Home extends StatelessWidget {
 
                     Navigator.push( context, MaterialPageRoute(builder: (context) => newPatientForm()));
 
-        // navigateTo(context, wishlist_screen(),);
+
       }},
 
-      // {"title":"info","icon":"info3.png"},
     ];
     return Scaffold(
-      // appBar: AppBar(
-      //   title: const Text("DoctorP+"),
-      //   actions: [
-      //     // log out button
-      //     Padding(
-      //       padding: const EdgeInsets.all(8.0),
-      //       child: DecoratedBox(
-      //         decoration: BoxDecoration(
-      //           shape: BoxShape.circle,
-      //           border: Border.all(color: Colors.white),
-      //         ),
-      //         child: IconButton(
-      //           onPressed: () {
-      //             // local storage
-      //             //_boxLogin.clear();
-      //             //_boxLogin.put("loginStatus", false);
-      //
-      //             Navigator.pushReplacement(
-      //               context,
-      //               MaterialPageRoute(
-      //                 builder: (context) {
-      //                   return const Login();
-      //                 },
-      //               ),
-      //             );
-      //           },
-      //           icon: const Icon(Icons.logout_rounded),
-      //         ),
-      //       ),
-      //     )
-      //   ],
-      // ),
       body:   SingleChildScrollView(
         child: Container(
           color: Colors.transparent,
@@ -261,7 +227,7 @@ class Home extends StatelessWidget {
                           Expanded(
                             child: MaterialButton(
                               padding: EdgeInsets.zero,
-                              onPressed: (){},
+                              onPressed: (){ ShopCubit.get(context).changeBottomNavbar(1);},
                               child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.0),
@@ -282,7 +248,7 @@ class Home extends StatelessWidget {
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       mainAxisAlignment: MainAxisAlignment.start,
                                       children: [
-                                        Text("Add Drug", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),),
+                                        Text("Drug", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,color: Colors.white),),
                                         Row(
                                           children: [
                                             Spacer(),
@@ -300,7 +266,7 @@ class Home extends StatelessWidget {
                           Expanded(
                               child: MaterialButton(
                                 padding: EdgeInsets.zero,
-                                onPressed: (){},
+                                onPressed: (){ShopCubit.get(context).changeBottomNavbar(2);},
                                 child: Container(
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(10.0),

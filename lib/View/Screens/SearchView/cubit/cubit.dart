@@ -9,8 +9,7 @@ import 'package:doctor_plus/View/Screens/SearchView/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../../Screens/HomeView/home.dart';
-import '../../../Screens/Report_Screen/report_screem.dart';
+
 
 class SearchCubit extends Cubit<SearchStates> {
   SearchCubit() :super(SearchInitialState());

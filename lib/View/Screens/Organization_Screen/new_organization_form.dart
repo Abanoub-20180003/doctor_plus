@@ -1,8 +1,10 @@
 import 'package:doctor_plus/Model/drug.dart';
+import 'package:doctor_plus/Model/organization.dart';
 import 'package:doctor_plus/View/Layout/Shop_app/ShopLayout.dart';
 import 'package:doctor_plus/View/Layout/colors.dart';
 import 'package:doctor_plus/View/Layout/components/components.dart';
 import 'package:doctor_plus/View/Screens/Drug_Screen/cubit/cubit.dart';
+import 'package:doctor_plus/View/Screens/Organization_Screen/cubit/cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
@@ -12,47 +14,21 @@ import 'package:toast/toast.dart';
 
 import 'cubit/states.dart';
 
-enum ganderGroup { male, female }
 
-class newDrugForm extends StatefulWidget {
-  const newDrugForm({Key? key}) : super(key: key);
+
+class newOrganizationForm extends StatefulWidget {
+  const newOrganizationForm({Key? key}) : super(key: key);
 
   @override
-  _newPatientForm createState() => _newPatientForm();
+  _new_Organization_Form createState() => _new_Organization_Form();
 }
 
-class _newPatientForm extends State<newDrugForm> {
+class _new_Organization_Form extends State<newOrganizationForm> {
   int _activeStepIndex = 0;
   var formKey = GlobalKey<FormState>();
 
-  TextEditingController No = TextEditingController();
-  TextEditingController Rank = TextEditingController();
   TextEditingController name = TextEditingController();
-  TextEditingController birth_of_date = TextEditingController();
-  TextEditingController marital_status = TextEditingController();
-  var _gender = 'male'; // gender
-
-  List columnHeaders = ['YES', 'NO'];
-  List rowHeaders = [
-    'Diabetes',
-    'DM',
-    'Complication',
-    'Endo Pancrease',
-    'Pit / Hypothalm',
-    'Thyroid',
-    'Parathroid',
-    'Adrenal',
-    'Genitourinary',
-    'Bone Disease',
-    'Dyslipidemia',
-    'Hypertension',
-    'CVS / CNS',
-    'Liver / GIT',
-    'Cancer',
-    'Psych / eating',
-    'Other'
-  ];
-  Map selectedMedicalHistory = new Map();
+  TextEditingController location = TextEditingController();
 
   List<Step> stepList() => [
         // General info
@@ -68,7 +44,7 @@ class _newPatientForm extends State<newDrugForm> {
               children: [
 
                 InputField (
-                    Controller: No,
+                    Controller: name,
                     type: TextInputType.name,
                     text: 'Name',
                     Icon: Icon(Icons.person),
@@ -86,9 +62,9 @@ class _newPatientForm extends State<newDrugForm> {
                   height: 8,
                 ),
                 InputField (
-                  Controller: Rank,
+                  Controller: location,
                   type: TextInputType.name,
-                  text: 'Company Name',
+                  text: 'Location Of Organization',
                   Icon: Icon(Icons.home),
                   validate:(value)
                   {
@@ -99,24 +75,6 @@ class _newPatientForm extends State<newDrugForm> {
                     return null;
                   },
                 ),
-                SizedBox(
-                  height: 8,
-                ),
-                InputField (
-                  Controller: name,
-                  type: TextInputType.name,
-                  text: 'Description',
-                  Icon: Icon(Icons.description),
-                  validate:(value)
-                  {
-                    if(value== null || value == "")
-                    {
-                      return "Description is required";
-                    }
-                    return null;
-                  },
-                ),
-
                  SizedBox(
                   height: 8,
                 ),
@@ -143,9 +101,9 @@ class _newPatientForm extends State<newDrugForm> {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text('Name: ${No.text}'),
-                Text('Company Name: ${Rank.text}'),
-                Text('Description: ${name.text}'),
+                Text('Name: ${name.text}'),
+                Text('Location : ${location.text}'),
+             //   Text('Description: ${name.text}'),
 
               ],
             )))
@@ -155,26 +113,25 @@ class _newPatientForm extends State<newDrugForm> {
   void initState() {
     super.initState();
   }
-  Drug p = new Drug();
-
+    Organization p = new Organization();
 
   @override
   Widget build(BuildContext context) {
     ToastContext().init(context);
     return BlocProvider (
-        create: (BuildContext context)=> DrugCubit() ,
-        child:  BlocConsumer<DrugCubit, DrugStates>(
+        create: (BuildContext context)=> OrganizationCubit() ,
+        child:  BlocConsumer<OrganizationCubit, OrgStates>(
         listener: (context, state) {
 
-       if (state is DrugSuccessAddState || state is DrugErrorAddState )
+       if (state is OrganizationSuccessAddState || state is OrganizationErrorAddState )
         {
-          if(state is DrugSuccessAddState )
+          if(state is OrganizationSuccessAddState )
             {
               showToast(msg: state.msg,
                   ToastStatus: ToastColor.SUCCESS);
               navigateAndFinsih(context,ShopLayout());
             }
-          else if(state is DrugErrorAddState)
+          else if(state is OrganizationErrorAddState)
             {
               showToast(msg: state.msg,
                   ToastStatus: ToastColor.ERROR);
@@ -188,7 +145,7 @@ class _newPatientForm extends State<newDrugForm> {
          return Scaffold(
     appBar: AppBar(
     title: const Text(
-    'Add New Medicine',
+    'Add New Organization',
     style: TextStyle(
     fontFamily: 'Bebas',
     letterSpacing: 1,
@@ -208,9 +165,8 @@ class _newPatientForm extends State<newDrugForm> {
     if (_activeStepIndex < (stepList().length - 1)) {
       if(formKey.currentState!.validate()) {
 
-        p.name = No.text;
-        p.com_name = Rank.text;
-        p.description = name.text;
+        p.name = name.text;
+        p.location = location.text;
         setState(() {
           _activeStepIndex += 1;
         });
@@ -218,9 +174,8 @@ class _newPatientForm extends State<newDrugForm> {
       }
 
     } else {
-    // print summary of the inpout values
-    // store data in patient object
-      DrugCubit.get(context).Add_Drug(drug: p);
+
+      OrganizationCubit.get(context).Add_New_Organization(org: p);
 
     }
     },

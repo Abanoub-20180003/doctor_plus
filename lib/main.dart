@@ -12,7 +12,6 @@ import 'package:doctor_plus/View/Screens/LoginView/login.dart';
 import 'package:doctor_plus/View/Screens/Organization_Screen/cubit/cubit.dart';
 import 'package:doctor_plus/View/Screens/Report_Screen/cubit/cubit.dart';
 import 'package:doctor_plus/View/Screens/SearchView/cubit/cubit.dart';
-import 'package:doctor_plus/main_app.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +23,6 @@ import 'View/Layout/Shop_app/share_screen2.dart';
 import 'View/Layout/components/components.dart';
 import 'View/Style/theme_manager.dart';
 import 'firebase_options.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 import 'network/Local/chaced_helper.dart';
 

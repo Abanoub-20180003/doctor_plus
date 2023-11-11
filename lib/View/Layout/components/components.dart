@@ -740,3 +740,9 @@ Timestamp? convert_string_to_time(String date)
     }
   return null;
 }
+
+Timestamp? convert_date_to_time(DateTime dateTime)
+{
+    Timestamp timestamp = Timestamp.fromDate(dateTime);
+    return timestamp;
+}

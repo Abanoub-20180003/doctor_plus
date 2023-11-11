@@ -9,8 +9,6 @@ import 'package:doctor_plus/View/Layout/components/constants.dart';
 import 'package:doctor_plus/network/Local/chaced_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-//import 'package:hive_flutter/hive_flutter.dart';
-import 'package:doctor_plus/View/Screens/HomeView/home.dart';
 import 'package:doctor_plus/Controller/authentication.dart';
 
 import 'signup.dart';
@@ -55,6 +53,7 @@ class _LoginState extends State<Login> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+              SizedBox(height: 30,),
               Image(image: AssetImage("Assets/images/login.png"), width: 250, height: 200,),
 
               // const SizedBox(height: 150),
