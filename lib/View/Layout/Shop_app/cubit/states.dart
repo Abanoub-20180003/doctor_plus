@@ -15,6 +15,21 @@ class ShopSuccessHomeDataState extends ShopStates {}
 class ShopErrorHomeDataState extends ShopStates {}
 
 
+class AppLoadingLoginHomeState extends ShopStates {}
+
+class AppSuccessLoginDataState extends ShopStates {
+  final String msg;
+  AppSuccessLoginDataState(this.msg);
+}
+
+class AppErrorLoginDataState extends ShopStates {
+  final String msg;
+  AppErrorLoginDataState(this.msg);
+}
+
+
+
+
 class ShopLoadingCategoryDataState extends ShopStates {}
 
 class ShopSuccessHomeCategoryState extends ShopStates {}

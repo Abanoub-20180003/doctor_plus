@@ -50,14 +50,7 @@ class org_screen extends StatelessWidget {
   Widget build(BuildContext context) {
     ToastContext().init(context);
     return BlocProvider (
-        create: (BuildContext context)=> OrganizationCubit()..Get_organizations(),
-          //   () {
-          // if(Brands_car == null)
-          //   {
-          //     CarCubit()..Get_Cars_user()..Get_Car_Brands();
-          //   }
-
-        // },
+        create: (BuildContext context)=>OrganizationCubit()..Get_organizations(),
     child:  BlocConsumer<OrganizationCubit, OrgStates>(
         listener: (context, state) {
 
@@ -220,7 +213,7 @@ class org_screen extends StatelessWidget {
                                     ),
 
                                   ),
-                                  Text("Not Found Medinice" , style: TextStyle(color:defaultColor,fontSize: 25),),
+                                  Text("Not Found Organization" , style: TextStyle(color:defaultColor,fontSize: 25),),
 
                                 ],
                               ),

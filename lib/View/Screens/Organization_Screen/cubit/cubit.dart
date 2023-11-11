@@ -37,13 +37,8 @@ class OrganizationCubit extends Cubit<OrgStates> {
     try{
       print("=============here============================");
       organizations = await db.getDoctorOrganizations();
-
-      print("=============here============================");
-      print(organizations[0].name);
-      print(organizations.length);
-      print("=============here============================");
-
       emit(DrugLoadingSuccessState());
+
     }catch (error) {
       print("Failed to add the Medicine: $error");
       emit(DrugLoadingErrorState());
@@ -59,10 +54,6 @@ class OrganizationCubit extends Cubit<OrgStates> {
       print("=============here============================");
       organizations = await db.getDoctorOrganizations();
 
-      print("=============here============================");
-      print(organizations[0].name);
-      print(organizations.length);
-      print("=============here============================");
 
       emit(DrugLoadingSuccessState());
       return organizations;
@@ -158,7 +149,7 @@ class OrganizationCubit extends Cubit<OrgStates> {
       emit(AssignDoctorLoadingDataState());
       bool assigned = await db.Assign_Doctor_to_org(Org_id,doc_id);
 
-     emit(AssignDoctorSuccessDataState(assigned));
+     emit(AssignDoctorSuccessDataState(assigned,"Doctor Added Successfully"));
     }catch (error) {
       print("Failed to Fetch Organization Data: $error");
       emit(AssignDoctorErrorDataState("Failed to Fetch Organization Data"));

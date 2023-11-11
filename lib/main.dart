@@ -49,7 +49,7 @@ void main() async {
   if (token2 != null) {
     final doctorMap = jsonDecode(token2);
     widget = ShopLayout();
-    // doctor_con = Doctor.fromJson(doctorMap);
+    //doctor_con = Doctor.fromJson(doctorMap);
     String? profile = ChacheHelper.getData(key: 'profile');
     if(profile != null)
     {

@@ -22,25 +22,7 @@ class ShopLayout extends StatelessWidget {
 
     return BlocConsumer<ShopCubit,ShopStates>(
       listener:(context,state){
-        // if(state is ShopSuccessGoToMarketState)
-        // {
-        //   if(product_details != Product())
-        //     {
-        //
-        //   if(product_details.in_cart == true)
-        //   {
-        //     product_details.in_cart= false;
-        //   }
-        //   else
-        //   {
-        //     product_details.in_cart = true;
-        //   }
-        //
-        //   print(product_details.in_cart);
-        //   print('h-------------------------------------------------');
-        // }
-        //
-        // }
+
       } ,
       builder: (context,state){
         var shopCubit = ShopCubit.get(context);

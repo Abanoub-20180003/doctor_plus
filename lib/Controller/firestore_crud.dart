@@ -15,7 +15,7 @@ class firestroeCRUD {
   Future<void> addDocotr(
       String name, String email, String pass, String id) async {
     dbConstants.doctorsRef
-        .add({'email': email, 'id': id, 'name': name, 'password': pass})
+        .add({'email': email, 'id': id, 'name': name, 'password': pass,'image':"2.png"})
         .then((value) => print("Doctor Added"))
         .catchError((error) => print("Failed to add the doctor: $error"));
   }

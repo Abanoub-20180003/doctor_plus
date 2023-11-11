@@ -10,7 +10,12 @@ import 'package:doctor_plus/network/Local/chaced_helper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:doctor_plus/Controller/authentication.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:loader_overlay/loader_overlay.dart';
+import 'package:motion_toast/motion_toast.dart';
 
+import '../../Layout/Shop_app/cubit/cubit.dart';
+import '../../Layout/Shop_app/cubit/states.dart';
 import 'signup.dart';
 
 class Login extends StatefulWidget {
@@ -31,8 +36,10 @@ class _LoginState extends State<Login> {
   final TextEditingController _controllerEmail = TextEditingController();
   final TextEditingController _controllerPassword = TextEditingController();
   firestroeCRUD db = firestroeCRUD();
+
   // local login
   bool _obscurePassword = true;
+
   //final Box _boxLogin = Hive.box("login");
   //final Box _boxAccounts = Hive.box("accounts");
 
@@ -43,173 +50,183 @@ class _LoginState extends State<Login> {
     //   return Home();
     // }
 
-    return Scaffold(
-      //backgroundColor: Theme.of(context).colorScheme.primaryContainer,
-      body: Form(
-        key: _formKey,
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.all(30.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 30,),
-              Image(image: AssetImage("Assets/images/login.png"), width: 250, height: 200,),
 
-              // const SizedBox(height: 150),
-              Text(
-                "Welcome back",
-                style: Theme.of(context).textTheme.headlineLarge,
-              ),
-              const SizedBox(height: 10),
-              Text(
-                "Login to your account",
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: _controllerEmail,
-                keyboardType: TextInputType.name,
-                decoration: InputDecoration(
-                  labelText: "Email",
-                  prefixIcon: const Icon(Icons.person_outline),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                onEditingComplete: () => _focusNodePassword.requestFocus(),
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter email.";
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 10),
-              TextFormField(
-                controller: _controllerPassword,
-                focusNode: _focusNodePassword,
-                obscureText: _obscurePassword,
-                keyboardType: TextInputType.visiblePassword,
-                decoration: InputDecoration(
-                  labelText: "Password",
-                  prefixIcon: const Icon(Icons.password_outlined),
-                  suffixIcon: IconButton(
-                      onPressed: () {
-                        setState(() {
-                          _obscurePassword = !_obscurePassword;
-                        });
-                      },
-                      icon: _obscurePassword
-                          ? const Icon(Icons.visibility_outlined)
-                          : const Icon(Icons.visibility_off_outlined)),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  enabledBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
-                validator: (String? value) {
-                  if (value == null || value.isEmpty) {
-                    return "Please enter password.";
-                  }
-                  return null;
-                },
-              ),
-              const SizedBox(height: 60),
-              Column(
-                children: [
-                  ElevatedButton(
+    return BlocConsumer<ShopCubit, ShopStates>(
+        listener: (context, state) {
 
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: defaultColor,
-                      minimumSize: const Size.fromHeight(50),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                    ),
-                    onPressed: () async {
-                      if (_formKey.currentState?.validate() ?? false) {
-                        // check login
-                        UserCredential loginResult;
-                        loginResult = await auth.signInEmail(
-                            _controllerEmail.text, _controllerPassword.text);
-                        if (loginResult != null) {
+          if (state is AppSuccessLoginDataState || state is AppErrorLoginDataState )
+          {
+            context.loaderOverlay.hide();
+            if(state is AppSuccessLoginDataState )
+            {
+              MotionToast.success(
+                title:  Text(state.msg),
+                description:  Text(""),
+              ).show(context);
+              navigateAndFinsih(context, ShopLayout());
+            }
+            else if(state is AppErrorLoginDataState)
+            {
+              MotionToast.error(
+                title:  Text(state.msg),
+                description:  Text(""),
+              ).show(context);
 
-                          print("${loginResult.user!.uid.toString()}");
-                          print("===============ngma==============================");
-                          await db.getDocById(doctorId: loginResult.user!.uid.toString());
-                          print("===============ngma==============================");
+            }
 
+          }
+        },
+        builder: (context, state) {
+          return Scaffold(
+              body: LoaderOverlay(
+                useDefaultLoading: false,
+                overlayWidget: loading(context),
+                overlayColor: Colors.black26,
+                overlayOpacity: 0.3,
 
-                          Doctor doctor = Doctor();
-                          doctor.id = loginResult.user!.uid;
-                          doctor.name = loginResult.user!.displayName;
-                          doctor.email = _controllerEmail.text;
-                          doctor.password = _controllerPassword.text;
-                          doctor_con = doctor;
+                child: Form(
+                  key: _formKey,
+                  child: SingleChildScrollView(
+                    padding: const EdgeInsets.all(30.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        SizedBox(height: 30,),
+                        Image(image: AssetImage("Assets/images/login.png"),
+                          width: 250,
+                          height: 200,),
 
-                         doctor_profile.id =  loginResult.user!.uid;
-                          final doctorJson = jsonEncode(doctor.toJson());
-                          final doctor_data_Json = jsonEncode(doctor_profile.toJson());
-
-                          ChacheHelper.saveData(key: 'Id',
-                            value: loginResult.user!.uid,);
-
-                          ChacheHelper.saveData(key: 'profile',
-                            value: doctor_data_Json,);
-
-                          ChacheHelper.saveData(key: 'token',
-                            value: doctorJson,)
-                              .then((value) =>
-                              navigateAndFinsih(context, ShopLayout()));
-
-                        } else {
-                          // print massage to the user to change pass or email
-                        }
-                      }
-                    },
-                    child: const Text("Login" , style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 20),),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text("Don't have an account?"),
-                      TextButton(
-                        onPressed: () {
-                          _formKey.currentState?.reset();
-
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return const Signup();
-                              },
+                        // const SizedBox(height: 150),
+                        Text(
+                          "Welcome back",
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .headlineLarge,
+                        ),
+                        const SizedBox(height: 10),
+                        Text(
+                          "Login to your account",
+                          style: Theme
+                              .of(context)
+                              .textTheme
+                              .bodyMedium,
+                        ),
+                        const SizedBox(height: 20),
+                        TextFormField(
+                          controller: _controllerEmail,
+                          keyboardType: TextInputType.name,
+                          decoration: InputDecoration(
+                            labelText: "Email",
+                            prefixIcon: const Icon(Icons.person_outline),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
                             ),
-                          );
-                        },
-                        child: const Text("Signup"),
-                      ),
-                    ],
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          onEditingComplete: () =>
+                              _focusNodePassword.requestFocus(),
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please enter email.";
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 10),
+                        TextFormField(
+                          controller: _controllerPassword,
+                          focusNode: _focusNodePassword,
+                          obscureText: _obscurePassword,
+                          keyboardType: TextInputType.visiblePassword,
+                          decoration: InputDecoration(
+                            labelText: "Password",
+                            prefixIcon: const Icon(Icons.password_outlined),
+                            suffixIcon: IconButton(
+                                onPressed: () {
+                                  setState(() {
+                                    _obscurePassword = !_obscurePassword;
+                                  });
+                                },
+                                icon: _obscurePassword
+                                    ? const Icon(Icons.visibility_outlined)
+                                    : const Icon(
+                                    Icons.visibility_off_outlined)),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please enter password.";
+                            }
+                            return null;
+                          },
+                        ),
+                        const SizedBox(height: 60),
+                        Column(
+                          children: [
+                            ElevatedButton(
+
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: defaultColor,
+                                minimumSize: const Size.fromHeight(50),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                              ),
+                              onPressed: () async {
+                                if (_formKey.currentState?.validate() ??
+                                    false) {
+                                  // check login
+                                  context.loaderOverlay.show();
+                                  ShopCubit.get(context).login(
+                                      email: _controllerEmail.text,
+                                      password: _controllerPassword.text);
+
+
+                                }
+                              },
+                              child: const Text("Login", style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 20),),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text("Don't have an account?"),
+                                TextButton(
+                                  onPressed: () {
+                                    _formKey.currentState?.reset();
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) {
+                                          return const Signup();
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  child: const Text("Signup"),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
+                ),)
+          );
+        });
   }
 
-  @override
-  void dispose() {
-    _focusNodePassword.dispose();
-    _controllerEmail.dispose();
-    _controllerPassword.dispose();
-    super.dispose();
-  }
 }

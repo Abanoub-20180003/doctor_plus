@@ -116,6 +116,9 @@ void signOut(context)async
         doctor_profile=Doctor(),
       }
   });
+
+  ChacheHelper.RemoveData(key:'Id');
+
   navigateAndFinsih(context, Login());
 }
 

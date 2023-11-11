@@ -75,7 +75,8 @@ class Home extends StatelessWidget {
 
     ];
     return Scaffold(
-      body:   SingleChildScrollView(
+      body:
+      SingleChildScrollView(
         child: Container(
           color: Colors.transparent,
           height: MediaQuery.sizeOf(context).height,

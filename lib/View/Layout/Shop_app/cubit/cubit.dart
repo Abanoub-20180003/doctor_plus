@@ -1,10 +1,17 @@
 
 
+import 'dart:convert';
+
+import 'package:doctor_plus/Controller/authentication.dart';
+import 'package:doctor_plus/Controller/firestore_crud.dart';
+import 'package:doctor_plus/Model/doctor.dart';
 import 'package:doctor_plus/View/Layout/Shop_app/cubit/states.dart';
 import 'package:doctor_plus/View/Layout/components/constants.dart';
 import 'package:doctor_plus/View/Screens/Drug_Screen/Drug_Screen.dart';
 import 'package:doctor_plus/View/Screens/LoginView/profile.dart';
 import 'package:doctor_plus/View/Screens/Report_Screen/Report_Screen.dart';
+import 'package:doctor_plus/network/Local/chaced_helper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,7 +34,8 @@ class ShopCubit extends Cubit<ShopStates> {
   ];
 
 
-
+  Authentication auth = Authentication();
+  firestroeCRUD db = firestroeCRUD();
 
   List<Widget> Screens = [
     Home(),
@@ -64,6 +72,53 @@ class ShopCubit extends Cubit<ShopStates> {
     Darktheme = Darktheme == true ? false : true;
     update_theme_app(theme: Darktheme);
     emit(ShopChangeBottomNavState());
+  }
+
+
+  Future<void> login({
+    required String email ,
+    required String password
+}) async {
+    UserCredential loginResult;
+    try {
+      emit(AppLoadingLoginHomeState());
+        loginResult = await auth.signInEmail(email, password);
+
+      if (loginResult != null) {
+
+        print("${loginResult.user!.uid.toString()}");
+        print("===============ngma==============================");
+        await db.getDocById(doctorId: loginResult.user!.uid.toString());
+        print("===============ngma==============================");
+
+
+        Doctor doctor = Doctor();
+        doctor.id = loginResult.user!.uid;
+        doctor.name = loginResult.user!.displayName;
+        doctor.email = email;
+        doctor.password = password;
+        doctor_con = doctor;
+
+        doctor_profile.id = loginResult.user!.uid;
+        final doctorJson = jsonEncode(doctor.toJson());
+        final doctor_data_Json = jsonEncode(doctor_profile.toJson());
+
+        ChacheHelper.saveData(key: 'Id',
+          value: loginResult.user!.uid,);
+
+        ChacheHelper.saveData(key: 'profile',
+          value: doctor_data_Json,);
+
+        ChacheHelper.saveData(key: 'token',
+          value: doctorJson,);
+           emit(AppSuccessLoginDataState("Login Successfully"));
+      }
+      else {
+        emit(AppErrorLoginDataState("Email Or Password Wrong"));
+      }
+    } catch (error) {
+      emit(AppErrorLoginDataState("Email Or Password Wrong"));
+    }
   }
 
 

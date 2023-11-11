@@ -122,7 +122,8 @@ class AssignDoctorLoadingDataState extends OrgStates {}
 
 class AssignDoctorSuccessDataState extends OrgStates {
   final bool status;
-  AssignDoctorSuccessDataState(this.status);
+  final String msg;
+  AssignDoctorSuccessDataState(this.status,this.msg);
 }
 
 class AssignDoctorErrorDataState extends OrgStates {

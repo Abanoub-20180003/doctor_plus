@@ -47,6 +47,23 @@ class add_doctor_screen extends StatelessWidget {
             }
     }
 
+
+    if (state is AssignDoctorSuccessDataState || state is AssignDoctorErrorDataState )
+    {
+      if(state is AssignDoctorSuccessDataState )
+      {
+        showToast(msg: state.msg,
+            ToastStatus: ToastColor.SUCCESS);
+        Navigator.of(context).pop();
+      }
+      else if(state is AssignDoctorErrorDataState)
+      {
+        showToast(msg: state.msg,
+            ToastStatus: ToastColor.ERROR);
+      }
+
+    }
+
       },
       builder: (context, state) {
 
@@ -158,8 +175,9 @@ class add_doctor_screen extends StatelessWidget {
                                             unique ==true ? MainButton(text: "Add", function: (){
                                               if(formKey.currentState!.validate())
                                               {
-                                                // context.loaderOverlay.show();
-                                                // PersonCubit.get(context).add_user_to_car(user_id:User!.data.id, new_user_id: User_search!.data.id,car_id: user_car!.data.car.id);
+                                                 context.loaderOverlay.show();
+                                                 OrganizationCubit.get(context).Assign_Doctor_To_Organization(doc_id: user_search!.id!,Org_id:org_id!);
+
 
                                                 }
 
