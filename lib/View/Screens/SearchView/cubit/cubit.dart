@@ -50,10 +50,6 @@ bool get_data = false;
     emit(ShopLoadingGetPatientsState());
     try{
       search_List = await db.getAllPatientsWithDrugs();
-      print(search_List.toString());
-      print('----------------------------------------------');
-      print(search_List.length);
-      print('----------------------------------------------');
       get_data = true;
       emit(ShopSuccessGetPatientsState("hEL"));
     }catch(onError) {

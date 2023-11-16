@@ -27,6 +27,7 @@ android {
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
 
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -49,6 +50,14 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+    }
+    signingConfigs {
+        release {
+            keyAlias 'key'
+            keyPassword 'john@Abanob'
+            storeFile file('../../keystore.jks')
+            storePassword 'john@Abanob'
+        }
     }
 
     buildTypes {

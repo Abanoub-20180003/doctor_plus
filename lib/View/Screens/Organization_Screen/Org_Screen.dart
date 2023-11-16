@@ -24,6 +24,7 @@ import 'package:toast/toast.dart';
 import '../../Layout/colors.dart';
 import '../../Layout/components/constants.dart';
 import '../../Style/color_manager.dart';
+import 'Org_detail_Screen2.dart';
 import 'cubit/states.dart';
 import 'package:doctor_plus/View/Layout/components/components.dart';
 
@@ -57,7 +58,7 @@ class org_screen extends StatelessWidget {
           if(state is OrgLoadingSuccessState)
             {
               context.loaderOverlay.hide();
-              navigateTo(context, Org_detail_Screen());
+              navigateTo(context, Org_detail_Screen2());
             }
 
           if(state is OrgLoadingGetDataState)
@@ -188,7 +189,7 @@ class org_screen extends StatelessWidget {
                                                 onPressed:(){
                                                   OrganizationCubit.get(context).Get_organizations_with_patients_doctors(OrganizationCubit.get(context).organizations[index]);
                                                 },
-                                                child: OrganizationcardTitle(OrganizationCubit.get(context).organizations[index], context,Org_detail_Screen())),
+                                                child: OrganizationcardTitle(OrganizationCubit.get(context).organizations[index], context,Org_detail_Screen2())),
                                           ),
                                           SizedBox(height: 10,),
                                         ],

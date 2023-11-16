@@ -5,6 +5,7 @@ import 'package:doctor_plus/View/Layout/colors.dart';
 import 'package:doctor_plus/View/Layout/components/components.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:motion_toast/motion_toast.dart';
 
 import '../../Layout/components/constants.dart';
 
@@ -120,37 +121,54 @@ class _MyAppState extends State<SelecteService > {
               isChecked[che] == true ? SizedBox(height: 5,) : SizedBox(height: 0,),
               isChecked[che] == true ?  Padding(
                 padding: const EdgeInsets.symmetric(horizontal:20.0),
-                child:   TextField(
-                  // Birth of date
+                child: TextFormField(
                   controller: end_at,
                   decoration:  InputDecoration(
                     border: OutlineInputBorder(),
                     labelText: 'End Date',
                   ),
                   readOnly: true,
-                  //set it true, so that user will not able to edit text
+
                   onTap: () async {
-                    DateTime? pickedDate = await showDatePicker(
+                    if (start_at.text.length != 0) {
+                      print(start_at.text.length);
+                      DateTime? pickedDate = await showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
                         firstDate: DateTime(1950),
-                        //DateTime.now() - not to allow to choose before today.
-                        lastDate: DateTime(2100));
+                        lastDate: DateTime(2100),
+                      );
 
-                    if (pickedDate != null) {
-                      print(
-                          pickedDate); //pickedDate output format => 2021-03-10 00:00:00.000
-                      String formattedDate =
-                      DateFormat('yyyy-MM-dd').format(pickedDate);
-                      print(
-                          formattedDate); //formatted date output using intl package =>  2021-03-16
-                      setState(() {
-                        end_at.text =
-                            formattedDate; //set output date to TextField value.
-                      });
-                    } else {}
+                      if (pickedDate != null) {
+                        print(pickedDate);
+                        String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
+                        print(formattedDate);
+                        setState(() {
+                          end_at.text = formattedDate;
+                        });
+                        formkey.currentState?.validate();
+                      }
+                    } else {
+
+                      formkey.currentState?.validate();
+                    }
                   },
-                ),
+                  validator:  (value) {
+              if (start_at.text == null || start_at.text.isEmpty) {
+                   return 'Please select a start date first.';
+              }else
+                {
+                  DateTime start = DateTime.parse(start_at.text);
+                  DateTime end = DateTime.parse(end_at.text);
+                    if(!end.isAfter(start))
+                      {
+                        return 'Please End At Date Should Be After Start At.';
+                      }
+                    return null;
+
+                }
+              }, )
+
               ):  SizedBox(height: 0,),
               //isChecked[che] == true ?
             ],
@@ -179,11 +197,28 @@ class _MyAppState extends State<SelecteService > {
               onPressed: () {
                 if(formkey.currentState!.validate())
                   {
+
+
+
+
                     drugs_added_patient = [];
 
                     for (var i = 0; i < isChecked.length; i++) {
                       if(isChecked[i] == true)
                         {
+                          DateTime start = DateTime.parse(start_at[i].text);
+                          DateTime end = DateTime.parse(end_at[i].text);
+
+                          if (end.isAfter(start)) {
+
+                          } else {
+                            MotionToast.error(
+                              title:  Text("End Date Before Start Date"),
+                              description:  Text(""),
+                            ).show(context);
+                            return null;
+                          }
+
                           Drug input = Drug();
                           input.Id = drugs_add_patient[i].Id;
                           input.name = drugs_add_patient[i].name;

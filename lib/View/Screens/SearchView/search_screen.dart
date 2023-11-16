@@ -19,10 +19,13 @@ class searchScreen extends StatelessWidget {
 
     return BlocProvider(
         create: (BuildContext context) => SearchCubit()..get_patients(),
+
         child: BlocConsumer<SearchCubit, SearchStates>(
           listener: (context, state) {},
           builder: (context, state) {
+
             var cubit = SearchCubit.get(context);
+
             return ConditionalBuilder(
                 condition: true,
                 builder: (context) {
@@ -40,13 +43,11 @@ class searchScreen extends StatelessWidget {
                     body: Container(
                       width: MediaQuery.sizeOf(context).width,
                       height: MediaQuery.sizeOf(context).height,
-
                       child: Form(
                         key: formkey,
                         child: Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                          child: Expanded(
-                            child: Column(children: [
+                          child:  Column(children: [
                               SizedBox(
                                 height: 15,
                               ),
@@ -117,7 +118,7 @@ class searchScreen extends StatelessWidget {
 
 
                             ]),
-                          ),
+
                         ),
                       ),
                     ),
@@ -129,36 +130,36 @@ class searchScreen extends StatelessWidget {
         ));
   }
 
-  Widget searchInputField(TextEditingController searchCon, SearchCubit cubit) {
-    return InputField(
-      Controller: searchCon,
-      onchange: (String text) {
-        print(text.length);
-        if (text != null && text.length != 0) {
-          cubit.search_product(search_text: searchCon.text);
-        } else if (text.length == 0) {
-          cubit.empty_search_product();
-          print('aho');
-        }
-      },
-      // onsumbit: (String text)
-      // {
-      //   // cubit.SearchProduct(text: text);
-      // },
-      type: TextInputType.text,
-      validate: (value) {
-        if (value == null || value == "") {
-          return "Search Value Must Be Not Empty";
-        }
-        return null;
-      },
-      Suffixicon: Icon(Icons.search),
-      functionSuffix: () {
-        // cubit.SearchProduct(text: searchCon.text);
-      },
-      Icon: Icon(Icons.data_usage),
-      text: 'Search',
-    );
-  }
+}
 
+Widget searchInputField(TextEditingController searchCon, SearchCubit cubit) {
+  return InputField(
+    Controller: searchCon,
+    onchange: (String text) {
+      print(text.length);
+      if (text != null && text.length != 0) {
+        cubit.search_product(search_text: searchCon.text);
+      } else if (text.length == 0) {
+        cubit.empty_search_product();
+        print('aho');
+      }
+    },
+    // onsumbit: (String text)
+    // {
+    //   // cubit.SearchProduct(text: text);
+    // },
+    type: TextInputType.text,
+    validate: (value) {
+      if (value == null || value == "") {
+        return "Search Value Must Be Not Empty";
+      }
+      return null;
+    },
+    Suffixicon: Icon(Icons.search),
+    functionSuffix: () {
+      // cubit.SearchProduct(text: searchCon.text);
+    },
+    Icon: Icon(Icons.data_usage),
+    text: 'Search',
+  );
 }

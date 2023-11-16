@@ -53,8 +53,8 @@ class profile extends StatelessWidget {
                     decoration: BoxDecoration(
 
                       borderRadius: BorderRadius.only(
-                        bottomLeft: Radius.circular(30.0), // Adjust the radius as needed
-                        bottomRight: Radius.circular(30.0), // Adjust the radius as needed
+                        bottomLeft: Radius.circular(40.0), // Adjust the radius as needed
+                        bottomRight: Radius.circular(40.0), // Adjust the radius as needed
                       ),
                       color:  ColorManager.primaryColor,
                     ),
@@ -142,59 +142,57 @@ class profile extends StatelessWidget {
                 ),
               ),
 
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Container(
-                      padding: EdgeInsets.only(top: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: Text('203', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),),
-                          ),
-                          Container(
-                            child: Text('Patient', style: TextStyle(fontSize: 15, color: Colors.blueGrey),),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(top: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: Text('932', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),),
-                          ),
-                          Container(
-                            child: Text('Medicial Test', style: TextStyle(fontSize: 15, color: Colors.blueGrey),),
-                          )
-                        ],
-                      ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.only(top: 10),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Container(
-                            child: Text('30', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),),
-                          ),
-                          Container(
-                            child: Text('Organization', style: TextStyle(fontSize: 15, color: Colors.blueGrey),),
-                          )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+              // Padding(
+              //   padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5),
+              //   child: Row(
+              //     mainAxisAlignment: MainAxisAlignment.spaceAround,
+              //     children: [
+              //       Container(
+              //         padding: EdgeInsets.only(top: 10),
+              //         child: Column(
+              //           crossAxisAlignment: CrossAxisAlignment.center,
+              //           children: [
+              //             Container(
+              //               child: Text('203', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),),
+              //             ),
+              //             Container(
+              //               child: Text('Patient', style: TextStyle(fontSize: 15, color: Colors.blueGrey),),
+              //             )
+              //           ],
+              //         ),
+              //       ),
+              //       Container(
+              //         padding: EdgeInsets.only(top: 10),
+              //         child: Column(
+              //           crossAxisAlignment: CrossAxisAlignment.center,
+              //           children: [
+              //             Container(
+              //               child: Text('932', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),),
+              //             ),
+              //             Container(
+              //               child: Text('Medicial Test', style: TextStyle(fontSize: 15, color: Colors.blueGrey),),
+              //             )
+              //           ],
+              //         ),
+              //       ),
+              //       Container(
+              //         padding: EdgeInsets.only(top: 10),
+              //         child: Column(
+              //           crossAxisAlignment: CrossAxisAlignment.center,
+              //           children: [
+              //             Container(
+              //               child: Text('30', style: TextStyle(fontWeight: FontWeight.w800, fontSize: 20),),
+              //             ),
+              //             Container(
+              //               child: Text('Organization', style: TextStyle(fontSize: 15, color: Colors.blueGrey),),
+              //             )
+              //           ],
+              //         ),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               SizedBox(height: 10,),
-
-
 
               Container(
                 padding: EdgeInsets.only(top: 0 , left: 15, right: 15),
@@ -404,13 +402,13 @@ class profile extends StatelessWidget {
                 ),
               ),
 
-              Container(
-                padding: EdgeInsets.only(top: 20),
-                child: Divider(
-                  thickness: 1,
-                  color: Colors.blueGrey[200],
-                ),
-              ),
+              // Container(
+              //   padding: EdgeInsets.only(top: 20),
+              //   child: Divider(
+              //     thickness: 1,
+              //     color: Colors.blueGrey[200],
+              //   ),
+              // ),
 
             ],
           ),
